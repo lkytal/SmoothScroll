@@ -117,8 +117,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="icon.png" />
-    <Content Include="screenshot.png" />
+    <Content Include="icon.png">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Condition="Exists($(VsSdkTargets))" Project="$(VsSdkTargets)" />

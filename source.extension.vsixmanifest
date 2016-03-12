@@ -1,22 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Vsix Version="1.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2010">
-	<Identifier Id="9ec8f525-55cf-419a-b3df-1436deadbeef">
+	<Identifier Id="C3E3372B-022D-4E19-BD83-EEDD6FA01E5C">
 		<Name>Smooth Scroll</Name>
 		<Author>Lkytal</Author>
-		<Version>1.1.0</Version>
-		<Description>Smooth scrolling for the Visual Studio text editor</Description>
+		<Version>1.0.1</Version>
+		<Description>Smooth scrolling for the Visual Studio 2013 and 2015</Description>
 		<MoreInfoUrl>https://github.com/lkytal/SmoothScroll</MoreInfoUrl>
 		<Locale>1033</Locale>
 		<Icon>icon.png</Icon>
-		<PreviewImage>screenshot.png</PreviewImage>
 		<SupportedProducts>
-			<VisualStudio Version="11.0">
+			<VisualStudio Version="12.0">
 				<Edition>Ultimate</Edition>
 				<Edition>Premium</Edition>
 				<Edition>Pro</Edition>
 				<Edition>IntegratedShell</Edition>
 			</VisualStudio>
-			<VisualStudio Version="12.0">
+			<VisualStudio Version="13.0">
 				<Edition>Ultimate</Edition>
 				<Edition>Premium</Edition>
 				<Edition>Pro</Edition>

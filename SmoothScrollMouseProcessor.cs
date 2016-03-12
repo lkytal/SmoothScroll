@@ -66,9 +66,9 @@ namespace SmoothScroll
 
 		private void SmoothScroll()
 		{
-			for (int i = 0; i < 50; i++ )
+			for (int i = 0; i < 40; i++ )
 			{
-				if (Math.Abs(Remain) < 1)
+				if (Math.Abs(Remain) < 2)
 				{
 					break;
 				}
@@ -86,7 +86,7 @@ namespace SmoothScroll
 					Scroll(Step);
 				}
 				
-				Thread.Sleep(12);
+				Thread.Sleep(15);
 			}
 
 			Scroll(Remain);
