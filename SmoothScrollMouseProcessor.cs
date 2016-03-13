@@ -66,9 +66,11 @@ namespace SmoothScroll
 
 		private void SmoothScroll()
 		{
-			for (int i = 0; i < 40; i++ )
+			double Radio = 0.1;
+
+			for (int i = 0; i < 45; i++ )
 			{
-				if (Math.Abs(Remain) < 2)
+				if (Math.Abs(Remain) < 1)
 				{
 					break;
 				}
@@ -78,18 +80,17 @@ namespace SmoothScroll
 					if (ReScroll == 1)
 					{
 						ReScroll = 0;
+
 						i = 0; //Restart
 					}
 
-					double Step = Remain / 10;
+					double Step = Remain * Radio;
 					Remain -= Step;
 					Scroll(Step);
 				}
 				
-				Thread.Sleep(15);
+				Thread.Sleep(12);
 			}
-
-			Scroll(Remain);
 		}
 	}
 }

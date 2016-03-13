@@ -3,7 +3,7 @@
 	<Identifier Id="C3E3372B-022D-4E19-BD83-EEDD6FA01E5C">
 		<Name>Smooth Scroll</Name>
 		<Author>Lkytal</Author>
-		<Version>1.0.1</Version>
+		<Version>1.1.0</Version>
 		<Description>Smooth scrolling for the Visual Studio 2013 and 2015</Description>
 		<MoreInfoUrl>https://github.com/lkytal/SmoothScroll</MoreInfoUrl>
 		<Locale>1033</Locale>
