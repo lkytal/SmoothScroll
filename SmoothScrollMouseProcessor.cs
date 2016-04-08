@@ -28,9 +28,11 @@ namespace SmoothScroll
 			this.WpfTextView = wpfTextView;			
 		}
 
-		private static float AmountToScroll(float a, float b, float amount)
+		private static double AmountToScroll(double remain)
 		{
-			return a + (b - a) * amount;
+			double Radio = 0.1;
+
+			return remain * Radio;
 		}
 
 		public override void PreprocessMouseWheel(MouseWheelEventArgs e)
@@ -66,8 +68,6 @@ namespace SmoothScroll
 
 		private void SmoothScroll()
 		{
-			double Radio = 0.1;
-
 			for (int i = 0; i < 45; i++ )
 			{
 				if (Math.Abs(Remain) < 1)
@@ -84,7 +84,7 @@ namespace SmoothScroll
 						i = 0; //Restart
 					}
 
-					double Step = Remain * Radio;
+					double Step = AmountToScroll(Remain);
 					Remain -= Step;
 					Scroll(Step);
 				}
