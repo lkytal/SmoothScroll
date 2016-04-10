@@ -24,7 +24,7 @@ namespace SmoothScroll
 		internal SmoothScrollMouseProcessor(IWpfTextView wpfTextView)
 		{
 			this.DispatcherAgent = Dispatcher.CurrentDispatcher;
-			this.WpfTextView = wpfTextView;			
+			this.WpfTextView = wpfTextView;
 		}
 
 		private static double AmountToScroll(double remain)
@@ -51,7 +51,7 @@ namespace SmoothScroll
 			{
 				ScrollTask = new Task(() => this.SmoothScroll());
 				ScrollTask.Start();
-			}		
+			}
 
 			e.Handled = true;
 		}
@@ -87,7 +87,7 @@ namespace SmoothScroll
 					Remain -= Step;
 					Scroll(Step);
 				}
-				
+
 				Thread.Sleep(12);
 			}
 		}
