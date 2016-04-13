@@ -44,6 +44,10 @@ namespace SmoothScroll
 
 		public OptionsPage()
 		{
+			if (SmoothScrollPackage.OptionsPage == null)
+			{
+				SmoothScrollPackage.OptionsPage = this;
+			}
 		}
 	}
 }

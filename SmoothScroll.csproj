@@ -24,7 +24,7 @@
     <OldToolsVersion>4.0</OldToolsVersion>
     <ReferencePath>$(ReferencePath);$(MSBuildThisFileDirectory)References</ReferencePath>
     <TargetFrameworkProfile />
-    <AssemblyVersion>1.1.0.14</AssemblyVersion>
+    <AssemblyVersion>1.1.0.15</AssemblyVersion>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <UseCodebase>true</UseCodebase>
@@ -205,6 +205,7 @@
     <Compile Include="SmoothScrollPackage.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".gitignore" />
     <None Include="app.config" />
     <None Include="Key.snk" />
     <None Include="packages.config" />

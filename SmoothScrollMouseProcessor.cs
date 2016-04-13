@@ -29,8 +29,11 @@ namespace SmoothScroll
 			this.DispatcherAgent = Dispatcher.CurrentDispatcher;
 			this.WpfTextView = wpfTextView;
 
-			ShiftEnable = SmoothScrollPackage.OptionsPage.ShiftEnable;
-			AltEnable = SmoothScrollPackage.OptionsPage.AltEnable;
+			if (SmoothScrollPackage.OptionsPage != null)
+			{
+				ShiftEnable = SmoothScrollPackage.OptionsPage.ShiftEnable;
+				AltEnable = SmoothScrollPackage.OptionsPage.AltEnable;
+			}
 		}
 
 		private static double AmountToScroll(double remain)

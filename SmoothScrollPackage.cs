@@ -16,8 +16,8 @@ namespace SmoothScroll
 	[PackageRegistration(UseManagedResourcesOnly = true)]
 	[InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)] // Info on this package for Help/About
 	[Guid(SmoothScrollPackage.PackageGuidString)]
-	//[ProvideAutoLoad(UIContextGuids80.NoSolution)]
-	[ProvideOptionPage(typeof(OptionsPage), "Scroll Info", "General", 0, 0, true)]
+	[ProvideAutoLoad(UIContextGuids80.NoSolution)]
+	[ProvideOptionPage(typeof(OptionsPage), "SmoothScroll", "General", 0, 0, true)]
 
 	[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
 	public sealed class SmoothScrollPackage : Package
