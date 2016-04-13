@@ -44,3 +44,4 @@ Unicode/
 exe/
 *.pdf
 Key.snk
+/packages

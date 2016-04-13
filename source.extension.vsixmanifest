@@ -3,7 +3,7 @@
 	<Identifier Id="C3E3372B-022D-4E19-BD83-EEDD6FA01E5C">
 		<Name>Smooth Scroll</Name>
 		<Author>Lkytal</Author>
-		<Version>1.3.0</Version>
+		<Version>1.4.0</Version>
 		<Description>Smooth scrolling for the Visual Studio 2013 and 2015</Description>
 		<MoreInfoUrl>https://github.com/lkytal/SmoothScroll</MoreInfoUrl>
 		<Locale>1033</Locale>
@@ -37,5 +37,14 @@
 	<References />
 	<Content>
 		<MefComponent>|SmoothScroll|</MefComponent>
+		<VsPackage>|%CurrentProject%;PkgdefProjectOutputGroup|</VsPackage>
 	</Content>
 </Vsix>
+<!--
+		Please add the following element to PackageManifest\\Assets:
+		<Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
+-->
+<!--
+		Please add the following element to PackageManifest\\Dependencies:
+		<Dependency Id="Microsoft.VisualStudio.MPF.14.0" DisplayName="Visual Studio MPF 14.0" d:Source="Installed" Version="[14.0]" />
+-->
