@@ -18,11 +18,13 @@ namespace SmoothScroll
 
 		private double Remain = 0;
 		private int ReScroll = 0;
+		private double SpeedRadio = 1.2;
 
 		private Task ScrollTask = null;
 
 		private bool ShiftEnable { get; set; }
 		private bool AltEnable { get; set; }
+		private bool SmoothEnable { get; set; }
 
 		internal SmoothScrollMouseProcessor(IWpfTextView wpfTextView)
 		{
@@ -33,10 +35,12 @@ namespace SmoothScroll
 			{
 				ShiftEnable = SmoothScrollPackage.OptionsPage.ShiftEnable;
 				AltEnable = SmoothScrollPackage.OptionsPage.AltEnable;
+				SpeedRadio = SmoothScrollPackage.OptionsPage.SpeedRadio;
+				SmoothEnable = SmoothScrollPackage.OptionsPage.SmoothEnable;
 			}
 		}
 
-		private static double AmountToScroll(double remain)
+		private double AmountToScroll(double remain)
 		{
 			double Radio = 0.1;
 
@@ -45,7 +49,7 @@ namespace SmoothScroll
 
 		public override void PreprocessMouseWheel(MouseWheelEventArgs e)
 		{
-			if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+			if ( !this.SmoothEnable || Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
 			{
 				return; //Only UnHandled Event
 			}
@@ -67,7 +71,7 @@ namespace SmoothScroll
 
 			lock (Locker)
 			{
-				Remain += e.Delta * 1.2;
+				Remain += e.Delta * SpeedRadio;
 				ReScroll = 1;
 			}
 
