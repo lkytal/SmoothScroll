@@ -33,18 +33,16 @@ namespace SmoothScroll
 
 			if (SmoothScrollPackage.OptionsPage != null)
 			{
-				ShiftEnable = SmoothScrollPackage.OptionsPage.ShiftEnable;
-				AltEnable = SmoothScrollPackage.OptionsPage.AltEnable;
-				SpeedRadio = SmoothScrollPackage.OptionsPage.SpeedRadio;
+				ShiftEnable  = SmoothScrollPackage.OptionsPage.ShiftEnable;
+				AltEnable    = SmoothScrollPackage.OptionsPage.AltEnable;
+				SpeedRadio   = SmoothScrollPackage.OptionsPage.SpeedRadio;
 				SmoothEnable = SmoothScrollPackage.OptionsPage.SmoothEnable;
 			}
 		}
 
-		private double AmountToScroll(double remain)
+		private double AmountToScroll(double remain, int round)
 		{
-			double Radio = 0.1;
-
-			return remain * Radio;
+			return remain * 0.1;
 		}
 
 		public override void PreprocessMouseWheel(MouseWheelEventArgs e)
@@ -94,7 +92,7 @@ namespace SmoothScroll
 
 		private void SmoothScroll()
 		{
-			for (int i = 0; i < 45; i++)
+			for (int i = 0; i < 60; i++)
 			{
 				if (Math.Abs(Remain) < 1)
 				{
@@ -110,12 +108,12 @@ namespace SmoothScroll
 						i = 0; //Restart
 					}
 
-					double Step = AmountToScroll(Remain);
+					double Step = AmountToScroll(Remain, i);
 					Remain -= Step;
 					Scroll(Step);
 				}
 
-				Thread.Sleep(12);
+				Thread.Sleep(10);
 			}
 		}
 	}
