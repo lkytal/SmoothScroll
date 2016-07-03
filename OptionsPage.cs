@@ -8,6 +8,8 @@ namespace SmoothScroll
 	[ClassInterface(ClassInterfaceType.AutoDual)]
 	public class OptionsPage : DialogPage
 	{
+		private bool extEnable = true;
+
 		private bool smoothEnable = true;
 
 		private bool shiftEnable = true;
@@ -17,17 +19,17 @@ namespace SmoothScroll
 		private double speedRadio = 1.2;
 
 		[Category("General")]
-		[Description("Enable SmoothScroll or not. Take effect after reopen editor (as well as other options)")]
-		[DisplayName("Enable SmoothScroll")]
-		public bool SmoothEnable
+		[Description("Enable This Extension or not. Take effect after reopen editor (as well as other options)")]
+		[DisplayName("Enable Extension")]
+		public bool ExtEnable
 		{
 			get
 			{
-				return this.smoothEnable;
+				return this.extEnable;
 			}
 			set
 			{
-				this.smoothEnable = value;
+				this.extEnable = value;
 			}
 		}
 
@@ -47,8 +49,23 @@ namespace SmoothScroll
 		}
 
 		[Category("Features")]
+		[Description("Enable SmoothScroll or not. Take effect after reopen editor")]
+		[DisplayName("Enable SmoothScroll")]
+		public bool SmoothEnable
+		{
+			get
+			{
+				return this.smoothEnable;
+			}
+			set
+			{
+				this.smoothEnable = value;
+			}
+		}
+
+		[Category("Features")]
 		[Description("Hold shift key to Scroll horizontally. Take effect after reopen editor.")]
-		[DisplayName("ShiftScroll")]
+		[DisplayName("Enable ShiftScroll")]
 		public bool ShiftEnable
 		{
 			get
@@ -63,7 +80,7 @@ namespace SmoothScroll
 
 		[Category("Features")]
 		[Description("Hold Alt key to scroll text view by one page up/down. Take effect after reopen editor.")]
-		[DisplayName("AltScroll")]
+		[DisplayName("Enable AltScroll")]
 		public bool AltEnable
 		{
 			get

@@ -46,3 +46,4 @@ exe/
 Key.snk
 /packages
 *.vsix
+*.TaskCanvasSL

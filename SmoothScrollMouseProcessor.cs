@@ -18,13 +18,15 @@ namespace SmoothScroll
 
 		private double Remain = 0;
 		private int ReScroll = 0;
-		private double SpeedRadio = 1.2;
 
 		private Task ScrollTask = null;
 
+		private bool ExtEnable { get; set; }
 		private bool ShiftEnable { get; set; }
 		private bool AltEnable { get; set; }
 		private bool SmoothEnable { get; set; }
+
+		private double SpeedRadio = 1.2;
 
 		internal SmoothScrollMouseProcessor(IWpfTextView wpfTextView)
 		{
@@ -33,9 +35,10 @@ namespace SmoothScroll
 
 			if (SmoothScrollPackage.OptionsPage != null)
 			{
-				ShiftEnable  = SmoothScrollPackage.OptionsPage.ShiftEnable;
-				AltEnable    = SmoothScrollPackage.OptionsPage.AltEnable;
-				SpeedRadio   = SmoothScrollPackage.OptionsPage.SpeedRadio;
+				ShiftEnable = SmoothScrollPackage.OptionsPage.ShiftEnable;
+				AltEnable = SmoothScrollPackage.OptionsPage.AltEnable;
+				SpeedRadio = SmoothScrollPackage.OptionsPage.SpeedRadio;
+				ExtEnable = SmoothScrollPackage.OptionsPage.ExtEnable;
 				SmoothEnable = SmoothScrollPackage.OptionsPage.SmoothEnable;
 			}
 		}
@@ -47,36 +50,44 @@ namespace SmoothScroll
 
 		public override void PreprocessMouseWheel(MouseWheelEventArgs e)
 		{
-			if ( !this.SmoothEnable || Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+			if (!this.ExtEnable || Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
 			{
-				return; //Only UnHandled Event
-			}
-
-			e.Handled = true;
-
-			if (this.AltEnable && (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)))
-			{
-				this.WpfTextView.ViewScroller.ScrollViewportVerticallyByPage(e.Delta < 0 ? ScrollDirection.Down : ScrollDirection.Up);
-
 				return;
 			}
 
 			if (this.ShiftEnable && (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift)))
 			{
 				this.WpfTextView.ViewScroller.ScrollViewportHorizontallyByPixels((double)(-e.Delta));
+
+				e.Handled = true;
+
 				return;
 			}
 
-			lock (Locker)
+			if (this.AltEnable && (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)))
 			{
-				Remain += e.Delta * SpeedRadio;
-				ReScroll = 1;
+				this.WpfTextView.ViewScroller.ScrollViewportVerticallyByPage(e.Delta < 0 ? ScrollDirection.Down : ScrollDirection.Up);
+
+				e.Handled = true;
+
+				return;
 			}
 
-			if (ScrollTask == null || ScrollTask.IsCompleted)
+			if (this.SmoothEnable)
 			{
-				ScrollTask = new Task(() => this.SmoothScroll());
-				ScrollTask.Start();
+				e.Handled = true;
+
+				lock (Locker)
+				{
+					Remain += e.Delta * SpeedRadio;
+					ReScroll = 1;
+				}
+
+				if (ScrollTask == null || ScrollTask.IsCompleted)
+				{
+					ScrollTask = new Task(() => this.SmoothScroll());
+					ScrollTask.Start();
+				}
 			}
 		}
 
