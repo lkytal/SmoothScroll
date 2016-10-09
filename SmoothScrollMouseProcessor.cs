@@ -105,14 +105,14 @@ namespace SmoothScroll
 		{
 			for (int i = 0; i < 50; i++)
 			{
-				if (Math.Abs(Remain) < 10)
-				{
-					Remain = 0;
-					break;
-				}
-
 				lock (Locker)
 				{
+					if (Math.Abs(Remain) < 10)
+					{
+						Remain = 0;
+						break;
+					}
+
 					if (ReScroll == 1)
 					{
 						ReScroll = 0;
