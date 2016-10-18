@@ -1,5 +1,4 @@
 using Microsoft.VisualStudio.Shell;
-using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 
@@ -18,6 +17,8 @@ namespace SmoothScroll
 
 		private double speedRadio = 1.2;
 
+		private double timeRadio = 1.0;
+
 		[Category("General")]
 		[Description("Enable This Extension or not. Take effect after reopen editor (as well as other options)")]
 		[DisplayName("Enable Extension")]
@@ -34,8 +35,8 @@ namespace SmoothScroll
 		}
 
 		[Category("General")]
-		[Description("Radio of scrolling speed, set to 1 means original speed. Take effect after reopen editor.")]
-		[DisplayName("Speed Radio")]
+		[Description("Distance Radio of scrolling, indicates how many lines to scroll per tick. Take effect after reopen editor.")]
+		[DisplayName("Distance Radio")]
 		public double SpeedRadio
 		{
 			get
@@ -45,6 +46,21 @@ namespace SmoothScroll
 			set
 			{
 				this.speedRadio = value;
+			}
+		}
+
+		[Category("General")]
+		[Description("Indicates scrolling animation duration. Take effect after reopen editor.")]
+		[DisplayName("Animation duration Radio")]
+		public double TimeRadio
+		{
+			get
+			{
+				return this.timeRadio;
+			}
+			set
+			{
+				this.timeRadio = value;
 			}
 		}
 

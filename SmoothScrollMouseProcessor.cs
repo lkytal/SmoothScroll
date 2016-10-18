@@ -2,7 +2,6 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 
@@ -27,6 +26,8 @@ namespace SmoothScroll
 		private bool SmoothEnable { get; set; }
 
 		private double SpeedRadio = 1.2;
+		private double TimeRadio = 1;
+		private int steps = 50;
 
 		internal SmoothScrollMouseProcessor(IWpfTextView wpfTextView)
 		{
@@ -37,15 +38,17 @@ namespace SmoothScroll
 			{
 				ShiftEnable = SmoothScrollPackage.OptionsPage.ShiftEnable;
 				AltEnable = SmoothScrollPackage.OptionsPage.AltEnable;
-				SpeedRadio = SmoothScrollPackage.OptionsPage.SpeedRadio;
 				ExtEnable = SmoothScrollPackage.OptionsPage.ExtEnable;
 				SmoothEnable = SmoothScrollPackage.OptionsPage.SmoothEnable;
+				SpeedRadio = SmoothScrollPackage.OptionsPage.SpeedRadio;
+				TimeRadio = SmoothScrollPackage.OptionsPage.TimeRadio;
+				steps = (int)(50 * TimeRadio);
 			}
 		}
 
 		private double AmountToScroll(double remain, int round)
 		{
-			return remain * 0.1;
+			return remain * 0.1 * 50 / steps;
 		}
 
 		public override void PreprocessMouseWheel(MouseWheelEventArgs e)
@@ -57,7 +60,7 @@ namespace SmoothScroll
 
 			if (this.ShiftEnable && (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift)))
 			{
-				this.WpfTextView.ViewScroller.ScrollViewportHorizontallyByPixels((double)(-e.Delta));
+				this.WpfTextView.ViewScroller.ScrollViewportHorizontallyByPixels(-e.Delta);
 
 				e.Handled = true;
 
@@ -85,7 +88,7 @@ namespace SmoothScroll
 
 				if (ScrollTask == null || ScrollTask.IsCompleted)
 				{
-					ScrollTask = new Task(() => this.SmoothScroll());
+					ScrollTask = new Task(this.SmoothScroll);
 					ScrollTask.Start();
 				}
 			}
@@ -93,17 +96,17 @@ namespace SmoothScroll
 
 		private void Scroll(double value)
 		{
-			Action Act = () =>
+			Action act = () =>
 			{
 				this.WpfTextView.ViewScroller.ScrollViewportVerticallyByPixels(value);
 			};
 
-			this.DispatcherAgent.BeginInvoke(Act);
+			this.DispatcherAgent.BeginInvoke(act);
 		}
 
 		private void SmoothScroll()
 		{
-			for (int i = 0; i < 50; i++)
+			for (int i = 0; i < steps; i++)
 			{
 				lock (Locker)
 				{
@@ -120,9 +123,9 @@ namespace SmoothScroll
 						i = 0; //Restart
 					}
 
-					double Step = AmountToScroll(Remain, i);
-					Remain -= Step;
-					Scroll(Step);
+					double distance = AmountToScroll(Remain, i);
+					Remain -= distance;
+					Scroll(distance);
 				}
 
 				Thread.Sleep(15);
