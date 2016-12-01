@@ -3,8 +3,8 @@
 	<Identifier Id="C3E3372B-022D-4E19-BD83-EEDD6FA01E5C">
 		<Name>Smooth Scroll</Name>
 		<Author>Lkytal</Author>
-		<Version>2.1.1</Version>
-		<Description>Smooth scrolling for the Visual Studio 2013, 2015 and VS15</Description>
+		<Version>2.2.0</Version>
+		<Description>Smooth scrolling for the Visual Studio 2013 and 2015</Description>
 		<MoreInfoUrl>https://github.com/lkytal/SmoothScroll</MoreInfoUrl>
 		<Locale>1033</Locale>
 		<Icon>icon.png</Icon>
@@ -19,17 +19,15 @@
 				<Edition>Ultimate</Edition>
 				<Edition>Premium</Edition>
 				<Edition>Pro</Edition>
+				<Edition>Community</Edition>
 				<Edition>IntegratedShell</Edition>
 			</VisualStudio>
 			<VisualStudio Version="14.0">
 			<Edition>Ultimate</Edition>
 				<Edition>Premium</Edition>
 				<Edition>Pro</Edition>
-				<Edition>IntegratedShell</Edition>
-			</VisualStudio>
-			<VisualStudio Version="15.0">
-				<Edition>Pro</Edition>
 				<Edition>Community</Edition>
+				<Edition>IntegratedShell</Edition>
 			</VisualStudio>
 		</SupportedProducts>
 		<SupportedFrameworkRuntimeEdition MinVersion="4.5" MaxVersion="5.0" />
