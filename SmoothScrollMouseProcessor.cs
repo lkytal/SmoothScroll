@@ -1,7 +1,5 @@
 ﻿using Microsoft.VisualStudio.Text.Editor;
 using System;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Threading;
 
@@ -18,11 +16,12 @@ namespace SmoothScroll
 		private bool AltEnable { get; set; }
 		private bool SmoothEnable { get; set; }
 
-		private double SpeedRadio = 1.2;
-		private double TimeRadio = 1;
-		private int steps = 50;
+		private double SpeedRadio = 1.2, TimeRadio = 1;
+		private int steps;
 
 		private ScrollController VerticalController, HorizontalController;
+
+		const int InitSteps = 40;
 
 		internal SmoothScrollMouseProcessor(IWpfTextView wpfTextView)
 		{
@@ -37,7 +36,7 @@ namespace SmoothScroll
 				SmoothEnable = SmoothScrollPackage.OptionsPage.SmoothEnable;
 				SpeedRadio   = SmoothScrollPackage.OptionsPage.SpeedRadio;
 				TimeRadio    = SmoothScrollPackage.OptionsPage.TimeRadio;
-				steps = (int)(50 * TimeRadio);
+				steps = (int)(InitSteps * TimeRadio);
 			}
 
 			VerticalController = new ScrollController(DispatcherAgent, wpfTextView, 1);

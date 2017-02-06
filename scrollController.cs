@@ -1,7 +1,6 @@
 using Microsoft.VisualStudio.Text.Editor;
 using System;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Threading;
 
@@ -13,11 +12,14 @@ namespace SmoothScroll
 
 		private readonly Dispatcher DispatcherAgent;
 		private readonly IWpfTextView WpfTextView;
+		private readonly int direction;
 
-		private double Total = 0, Remain = 0;
-		private int direction, steps = 0, round = 0;
+		private double Total, Remain;
+		private int steps, round;
 
-		private System.Threading.Timer timer;
+		private Timer timer;
+
+		private const int Interval =15;
 
 		public ScrollController(Dispatcher _DispatcherAgent, IWpfTextView _WpfTextView, int _direction)
 		{
@@ -25,7 +27,7 @@ namespace SmoothScroll
 			WpfTextView = _WpfTextView;
 			direction = _direction;
 
-			timer = new Timer(ScrollingThread, null, Timeout.Infinite, 15);
+			timer = new Timer(ScrollingThread, null, Timeout.Infinite, Interval);
 		}
 
 		~ScrollController()
@@ -37,11 +39,21 @@ namespace SmoothScroll
 		{
 			lock (Locker)
 			{
-				Remain += distance;
+				if (round == steps)
+				{
+					Total = distance;
+					Remain = distance;
+				}
+				else
+				{
+					Remain += distance;
+					Total = Remain;
+				}
+
 				round = 0;
 				steps = _steps;
 
-				timer.Change(0, 15);
+				timer.Change(0, Interval);
 			}
 		}
 
@@ -62,30 +74,19 @@ namespace SmoothScroll
 			this.DispatcherAgent.BeginInvoke(act);
 		}
 
-		private double pos = 0;
-
-		private double AmountToScrollNew(double remain)
+		private double AmountToScroll()
 		{
-			double total = remain + pos;
+			double pos = (2 * Total / steps) * (steps - round) / steps;
 
-			double degrees = (double)(round * 90) / steps;
-
-			double last = pos;
-			pos = total * Math.Sin(degrees * (Math.PI / 180));
-
-			return pos - last;
-		}
-
-		private double AmountToScroll(double remain)
-		{
-			return remain * 0.1 * steps / 50;
+			return pos;
 		}
 
 		private void ScrollingThread(object obj)
 		{
 			if (round == steps)
 			{
-				timer.Change(Timeout.Infinite, 15);
+				timer.Change(Timeout.Infinite, Interval);
+
 				return;
 			}
 
@@ -95,14 +96,7 @@ namespace SmoothScroll
 			{
 				round += 1;
 
-				if (Math.Abs(Remain) < 5)
-				{
-					round = steps;
-
-					return;
-				}
-
-				distance = AmountToScroll(Remain);
+				distance = AmountToScroll();
 
 				Remain -= distance;
 			}
