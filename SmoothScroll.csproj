@@ -135,6 +135,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="scrollController.cs" />
     <Compile Include="SmoothScrollMouseProcessor.cs" />
     <Compile Include="SmoothScrollMouseProcessorProvider.cs" />
     <Compile Include="SmoothScrollPackage.cs" />
