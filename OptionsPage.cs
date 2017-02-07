@@ -8,15 +8,11 @@ namespace SmoothScroll
 	public class OptionsPage : DialogPage
 	{
 		private bool extEnable = true;
-
 		private bool smoothEnable = true;
-
 		private bool shiftEnable = true;
-
 		private bool aLtEnable = true;
 
 		private double speedRadio = 1.2;
-
 		private double timeRadio = 1.0;
 
 		[Category("General")]

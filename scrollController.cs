@@ -1,7 +1,6 @@
 using Microsoft.VisualStudio.Text.Editor;
 using System;
 using System.Threading;
-using System.Windows.Input;
 using System.Windows.Threading;
 
 namespace SmoothScroll
@@ -9,6 +8,7 @@ namespace SmoothScroll
 	internal class ScrollController
 	{
 		private readonly object Locker = new object();
+		private readonly Timer timer;
 
 		private readonly Dispatcher DispatcherAgent;
 		private readonly IWpfTextView WpfTextView;
@@ -17,9 +17,7 @@ namespace SmoothScroll
 		private double Total, Remain;
 		private int steps, round;
 
-		private Timer timer;
-
-		private const int Interval =15;
+		private const int Interval = 15;
 
 		public ScrollController(Dispatcher _DispatcherAgent, IWpfTextView _WpfTextView, int _direction)
 		{
@@ -32,6 +30,7 @@ namespace SmoothScroll
 
 		~ScrollController()
 		{
+			timer.Change(Timeout.Infinite, Interval);
 			timer.Dispose();
 		}
 
@@ -86,18 +85,27 @@ namespace SmoothScroll
 			if (round == steps)
 			{
 				timer.Change(Timeout.Infinite, Interval);
-
 				return;
 			}
 
-			double distance = 0;
+			double distance;
 
 			lock (Locker)
 			{
-				round += 1;
-
 				distance = AmountToScroll();
+				double dis = Math.Abs(distance);
 
+				if (0.3 < dis && dis < 0.9)
+				{
+					distance = distance > 0 ? 1 : -1;
+				}
+				else if (0.3 > dis)
+				{
+					round = steps;
+					return;
+				}
+
+				round += 1;
 				Remain -= distance;
 			}
 

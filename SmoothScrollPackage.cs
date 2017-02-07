@@ -1,15 +1,7 @@
-﻿using System;
-using System.ComponentModel.Design;
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
-using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.Win32;
-using System.ComponentModel;
 
 namespace SmoothScroll
 {
@@ -25,10 +17,6 @@ namespace SmoothScroll
 		public const string PackageGuidString = "6bb22343-df63-4f19-8088-66caeafde0ad";
 
 		public static OptionsPage OptionsPage;
-
-		public SmoothScrollPackage()
-		{
-		}
 
 		/// <summary>
 		/// Initialization of the package; this method is called right after the package is sited, so this is the place
