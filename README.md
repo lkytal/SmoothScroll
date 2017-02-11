@@ -13,6 +13,12 @@ preview:
 ![ScreenShot](https://dn-lkytal.qbox.me/ss.gif)
 
 Update Log:
+
+* 2.3.2 : Fixup improper dispose
+* 2.3.1 : Better algorithm
+* 2.2.0 : Smooth scrolling when horizontally
+* 2.1.1 : Refined algorithm
+* 2.1.0 : More flexible settings
 * 2.0.5 : Fixup for VS2013
 * 2.0.4 : First stage fixup for VS2013
 * 1.0.0 : Option page and additional features

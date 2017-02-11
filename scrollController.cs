@@ -28,12 +28,6 @@ namespace SmoothScroll
 			timer = new Timer(ScrollingThread, null, Timeout.Infinite, Interval);
 		}
 
-		~ScrollController()
-		{
-			timer.Change(Timeout.Infinite, Interval);
-			timer.Dispose();
-		}
-
 		public void StartScroll(double distance, int _steps)
 		{
 			lock (Locker)

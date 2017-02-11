@@ -71,9 +71,8 @@ namespace SmoothScroll
 
 			if (this.SmoothEnable)
 			{
-				e.Handled = true;
-
 				StartScroll(e.Delta, 1);
+				e.Handled = true;
 			}
 		}
 
@@ -81,11 +80,11 @@ namespace SmoothScroll
 		{
 			if (direction == 1)
 			{
-				VerticalController.StartScroll(distance * SpeedRadio, (int)(steps * TimeRadio));
+				VerticalController.StartScroll(distance * SpeedRadio, steps);
 			}
 			else
 			{
-				HorizontalController.StartScroll(distance * SpeedRadio, (int)(steps * TimeRadio));
+				HorizontalController.StartScroll(distance * SpeedRadio, steps);
 			}
 		}
 	}
