@@ -1,6 +1,7 @@
 using Microsoft.VisualStudio.Text.Editor;
 using System;
 using System.Threading;
+using System.Windows.Input;
 using System.Windows.Threading;
 
 namespace SmoothScroll
@@ -12,14 +13,14 @@ namespace SmoothScroll
 
 		private readonly Dispatcher DispatcherAgent;
 		private readonly IWpfTextView WpfTextView;
-		private readonly int direction;
+		private readonly ScrollingDirection direction;
 
-		private double Total, Remain;
-		private int steps, round;
+		private double total, remain;
+		private int totalSteps, round;
 
 		private const int Interval = 15;
 
-		public ScrollController(Dispatcher _DispatcherAgent, IWpfTextView _WpfTextView, int _direction)
+		public ScrollController(Dispatcher _DispatcherAgent, IWpfTextView _WpfTextView, ScrollingDirection _direction)
 		{
 			DispatcherAgent = _DispatcherAgent;
 			WpfTextView = _WpfTextView;
@@ -28,23 +29,28 @@ namespace SmoothScroll
 			timer = new Timer(ScrollingThread, null, Timeout.Infinite, Interval);
 		}
 
-		public void StartScroll(double distance, int _steps)
+		public void StartScroll(double distance, int _totalSteps)
 		{
 			lock (Locker)
 			{
-				if (round == steps)
+				if (round == totalSteps)
 				{
-					Total = distance;
-					Remain = distance;
+					total = distance;
+					remain = distance;
+				}
+				else if (Math.Sign(distance) != Math.Sign(remain))
+				{
+					total = distance;
+					remain = distance;
 				}
 				else
 				{
-					Remain += distance;
-					Total = Remain;
+					remain += distance;
+					total = remain;
 				}
 
 				round = 0;
-				steps = _steps;
+				totalSteps = _totalSteps;
 
 				timer.Change(0, Interval);
 			}
@@ -54,11 +60,11 @@ namespace SmoothScroll
 		{
 			Action act = () =>
 			{
-				if (direction == 1)
+				if (direction == ScrollingDirection.Vertical)
 				{
 					this.WpfTextView.ViewScroller.ScrollViewportVerticallyByPixels(value);
 				}
-				else if (direction == 2)
+				else if (direction == ScrollingDirection.Horizental)
 				{
 					this.WpfTextView.ViewScroller.ScrollViewportHorizontallyByPixels(value);
 				}
@@ -69,41 +75,50 @@ namespace SmoothScroll
 
 		private double AmountToScroll()
 		{
-			double pos = (2 * Total / steps) * (steps - round) / steps;
+			//double stepLength = (Total / 12) * Math.Pow((1 - (double)round / steps), 3);
 
-			return pos;
+			double stepLength = remain / 10;
+
+			//if (Math.Abs(stepLength) < 1)
+			//{
+			//	stepLength = stepLength > 0 ? 1 : -1;
+			//}
+
+			return stepLength;
+		}
+
+		private void StopScroll()
+		{
+			timer.Change(Timeout.Infinite, Interval);
+			round = totalSteps;
+			total = remain = 0;
 		}
 
 		private void ScrollingThread(object obj)
 		{
-			if (round == steps)
-			{
-				timer.Change(Timeout.Infinite, Interval);
-				return;
-			}
-
-			double distance;
+			double stepLength;
 
 			lock (Locker)
 			{
-				distance = AmountToScroll();
-				double dis = Math.Abs(distance);
+				stepLength = AmountToScroll();
 
-				if (0.3 < dis && dis < 0.9)
+				if (round == totalSteps || Math.Abs(stepLength) < 0.1)
 				{
-					distance = distance > 0 ? 1 : -1;
-				}
-				else if (0.3 > dis)
-				{
-					round = steps;
+					StopScroll();
 					return;
 				}
 
 				round += 1;
-				Remain -= distance;
+				remain -= stepLength;
 			}
 
-			Scroll(distance);
+			Scroll(stepLength);
 		}
+	}
+
+	internal enum ScrollingDirection
+	{
+		Vertical = 1,
+		Horizental = 2
 	}
 }
