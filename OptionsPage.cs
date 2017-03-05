@@ -1,6 +1,6 @@
-using Microsoft.VisualStudio.Shell;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using Microsoft.VisualStudio.Shell;
 
 namespace SmoothScroll
 {
@@ -12,8 +12,8 @@ namespace SmoothScroll
 		private bool shiftEnable = true;
 		private bool aLtEnable = true;
 
-		private double speedRadio = 1.2;
-		private double timeRadio = 1.0;
+		private double speedRatio = 1.2;
+		private double timeRatio = 1.0;
 
 		[Category("General")]
 		[Description("Enable This Extension or not. Take effect after reopen editor (as well as other options)")]
@@ -22,86 +22,86 @@ namespace SmoothScroll
 		{
 			get
 			{
-				return this.extEnable;
+				return extEnable;
 			}
 			set
 			{
-				this.extEnable = value;
+				extEnable = value;
 			}
 		}
 
 		[Category("General")]
-		[Description("Distance Radio of scrolling, indicates how many lines to scroll per tick. Take effect after reopen editor.")]
-		[DisplayName("Distance Radio")]
-		public double SpeedRadio
+		[Description("Distance Ratio of scrolling, indicates how long to scroll. Take effect after reopen editor.")]
+		[DisplayName("Distance Ratio")]
+		public double SpeedRatio
 		{
 			get
 			{
-				return this.speedRadio;
+				return speedRatio;
 			}
 			set
 			{
-				this.speedRadio = value;
+				speedRatio = value;
 			}
 		}
 
 		[Category("General")]
 		[Description("Indicates scrolling animation duration. Take effect after reopen editor.")]
-		[DisplayName("Animation duration Radio")]
-		public double TimeRadio
+		[DisplayName("Animation duration Ratio")]
+		public double TimeRatio
 		{
 			get
 			{
-				return this.timeRadio;
+				return timeRatio;
 			}
 			set
 			{
-				this.timeRadio = value;
+				timeRatio = value;
 			}
 		}
 
 		[Category("Features")]
-		[Description("Enable SmoothScroll or not. Take effect after reopen editor")]
-		[DisplayName("Enable SmoothScroll")]
+		[Description("Enable Smooth Scroll or not. Take effect after reopen editor")]
+		[DisplayName("Enable Smooth Scroll")]
 		public bool SmoothEnable
 		{
 			get
 			{
-				return this.smoothEnable;
+				return smoothEnable;
 			}
 			set
 			{
-				this.smoothEnable = value;
+				smoothEnable = value;
 			}
 		}
 
 		[Category("Features")]
-		[Description("Hold shift key to Scroll horizontally. Take effect after reopen editor.")]
-		[DisplayName("Enable ShiftScroll")]
+		[Description("Hold shift key to scroll horizontally. Take effect after reopen editor.")]
+		[DisplayName("Enable Shift Scroll")]
 		public bool ShiftEnable
 		{
 			get
 			{
-				return this.shiftEnable;
+				return shiftEnable;
 			}
 			set
 			{
-				this.shiftEnable = value;
+				shiftEnable = value;
 			}
 		}
 
 		[Category("Features")]
 		[Description("Hold Alt key to scroll text view by one page up/down. Take effect after reopen editor.")]
-		[DisplayName("Enable AltScroll")]
+		[DisplayName("Enable Alt Scroll")]
 		public bool AltEnable
 		{
 			get
 			{
-				return this.aLtEnable;
+				return aLtEnable;
 			}
 			set
 			{
-				this.aLtEnable = value;
+				aLtEnable = value;
 			}
 		}
 

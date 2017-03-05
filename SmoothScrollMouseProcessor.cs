@@ -15,10 +15,10 @@ namespace SmoothScroll
 		private bool AltEnable { get; set; }
 		private bool SmoothEnable { get; set; }
 
-		private double SpeedRadio = 1.2, TimeRadio = 1;
+		private double SpeedRatio = 1.1, TimeRatio = 1;
 		private int totalSteps;
 
-		private ScrollController VerticalController, HorizontalController;
+		private readonly ScrollController VerticalController, HorizontalController;
 
 		private const int InitSteps = 40;
 
@@ -41,19 +41,19 @@ namespace SmoothScroll
 			AltEnable = SmoothScrollPackage.OptionsPage.AltEnable;
 			ExtEnable = SmoothScrollPackage.OptionsPage.ExtEnable;
 			SmoothEnable = SmoothScrollPackage.OptionsPage.SmoothEnable;
-			SpeedRadio = SmoothScrollPackage.OptionsPage.SpeedRadio;
-			TimeRadio = SmoothScrollPackage.OptionsPage.TimeRadio;
-			totalSteps = (int) (InitSteps * TimeRadio);
+			SpeedRatio = SmoothScrollPackage.OptionsPage.SpeedRatio;
+			TimeRatio = SmoothScrollPackage.OptionsPage.TimeRatio;
+			totalSteps = (int) (InitSteps * TimeRatio);
 		}
 
 		public override void PreprocessMouseWheel(MouseWheelEventArgs e)
 		{
-			if (!this.ExtEnable || Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+			if (!ExtEnable || Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
 			{
 				return;
 			}
 
-			if (this.ShiftEnable && (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift)))
+			if (ShiftEnable && (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift)))
 			{
 				StartScroll(e.Delta, ScrollingDirection.Horizental);
 
@@ -61,7 +61,7 @@ namespace SmoothScroll
 				return;
 			}
 
-			if (this.AltEnable && (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)))
+			if (AltEnable && (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)))
 			{
 				WpfTextView.ViewScroller.ScrollViewportVerticallyByPage(e.Delta < 0 ? ScrollDirection.Down : ScrollDirection.Up);
 
@@ -69,7 +69,7 @@ namespace SmoothScroll
 				return;
 			}
 
-			if (this.SmoothEnable)
+			if (SmoothEnable)
 			{
 				StartScroll(e.Delta, ScrollingDirection.Vertical);
 				e.Handled = true;
@@ -80,11 +80,11 @@ namespace SmoothScroll
 		{
 			if (direction == ScrollingDirection.Vertical)
 			{
-				VerticalController.StartScroll(distance * SpeedRadio, totalSteps);
+				VerticalController.StartScroll(distance * SpeedRatio, totalSteps);
 			}
 			else
 			{
-				HorizontalController.StartScroll(distance * SpeedRadio, totalSteps);
+				HorizontalController.StartScroll(distance * SpeedRatio, totalSteps);
 			}
 		}
 	}

@@ -1,13 +1,15 @@
 using Microsoft.VisualStudio.Text.Editor;
 using System;
 using System.Threading;
-using System.Windows.Input;
+using System.Windows;
 using System.Windows.Threading;
 
 namespace SmoothScroll
 {
 	internal class ScrollController
 	{
+		private const int Interval = 14;
+
 		private readonly object Locker = new object();
 		private readonly Timer timer;
 
@@ -15,10 +17,12 @@ namespace SmoothScroll
 		private readonly IWpfTextView WpfTextView;
 		private readonly ScrollingDirection direction;
 
+		private readonly double accelerator = 1.5;
+		private readonly double dpiRatio;
+
 		private double total, remain;
 		private int totalSteps, round;
 
-		private const int Interval = 15;
 
 		public ScrollController(Dispatcher _DispatcherAgent, IWpfTextView _WpfTextView, ScrollingDirection _direction)
 		{
@@ -27,9 +31,11 @@ namespace SmoothScroll
 			direction = _direction;
 
 			timer = new Timer(ScrollingThread, null, Timeout.Infinite, Interval);
+
+			dpiRatio = SystemParameters.PrimaryScreenHeight / 1080.0;
 		}
 
-		public void StartScroll(double distance, int _totalSteps)
+		public void StartScroll(double distance, int maxTotalSteps)
 		{
 			lock (Locker)
 			{
@@ -45,12 +51,15 @@ namespace SmoothScroll
 				}
 				else
 				{
-					remain += distance;
+					remain += distance * accelerator;
 					total = remain;
 				}
 
+				double stepsRatio = Math.Sqrt(Math.Abs(total / dpiRatio) / 400);
+
+				totalSteps = (int)(maxTotalSteps * Math.Min(stepsRatio, 1));
+
 				round = 0;
-				totalSteps = _totalSteps;
 
 				timer.Change(0, Interval);
 			}
@@ -62,29 +71,40 @@ namespace SmoothScroll
 			{
 				if (direction == ScrollingDirection.Vertical)
 				{
-					this.WpfTextView.ViewScroller.ScrollViewportVerticallyByPixels(value);
+					WpfTextView.ViewScroller.ScrollViewportVerticallyByPixels(value);
 				}
 				else if (direction == ScrollingDirection.Horizental)
 				{
-					this.WpfTextView.ViewScroller.ScrollViewportHorizontallyByPixels(value);
+					WpfTextView.ViewScroller.ScrollViewportHorizontallyByPixels(value);
 				}
 			};
 
-			this.DispatcherAgent.BeginInvoke(act);
+			DispatcherAgent.BeginInvoke(act);
 		}
 
-		private double AmountToScroll()
+		private int AmountToScroll()
 		{
-			//double stepLength = (Total / 12) * Math.Pow((1 - (double)round / steps), 3);
+			double rate = (double) round / totalSteps;
 
-			double stepLength = remain / 10;
+			double stepLength;
 
-			//if (Math.Abs(stepLength) < 1)
-			//{
-			//	stepLength = stepLength > 0 ? 1 : -1;
-			//}
+			//stepLength = (2 * total / totalSteps) * (1 - rate);
+			//stepLength = (total / 16.17) * Math.Pow(1 - rate, 2);
+			//stepLength = (total / 16.19) * (1 - Math.Sqrt(rate));
+			//stepLength = (total / 38.25) * Math.Cos(rate * (2 / Math.PI));
 
-			return stepLength;
+			double meanLength = total / (totalSteps / 2.0 + 10);
+
+			if (rate > 0.333)
+			{
+				stepLength = remain / 10;
+			}
+			else
+			{
+				stepLength = meanLength;
+			}
+
+			return (int)Math.Round(stepLength);
 		}
 
 		private void StopScroll()
@@ -96,13 +116,13 @@ namespace SmoothScroll
 
 		private void ScrollingThread(object obj)
 		{
-			double stepLength;
+			int stepLength;
 
 			lock (Locker)
 			{
 				stepLength = AmountToScroll();
 
-				if (round == totalSteps || Math.Abs(stepLength) < 0.1)
+				if (round == totalSteps || stepLength == 0)
 				{
 					StopScroll();
 					return;
