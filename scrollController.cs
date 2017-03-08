@@ -6,9 +6,11 @@ using System.Windows.Threading;
 
 namespace SmoothScroll
 {
+	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable")]
 	internal class ScrollController
 	{
 		private const int Interval = 14;
+		private const double accelerator = 1.4;
 
 		private readonly object Locker = new object();
 		private readonly Timer timer;
@@ -17,7 +19,6 @@ namespace SmoothScroll
 		private readonly IWpfTextView WpfTextView;
 		private readonly ScrollingDirection direction;
 
-		private readonly double accelerator = 1.5;
 		private readonly double dpiRatio;
 
 		private double total, remain;

@@ -14,6 +14,7 @@ preview:
 
 Update Log:
 
+* 2.5.0 : Support for visual Studio 2017
 * 2.4.0 : Adaptive scroll duration
 * 2.3.2 : Fixup improper dispose
 * 2.3.1 : Better algorithm
