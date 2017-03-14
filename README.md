@@ -1,9 +1,8 @@
 # SmoothScroll
-Smooth scrolling for the Visual Studio 2013 and 2015
+Smooth scrolling for the Visual Studio 2013, 2015 and 2017
 
 Smooth scrolling on visual studio gallery : https://visualstudiogallery.msdn.microsoft.com/30b1f9a2-845d-48f2-aafc-98ece8817a87
 
-Smooth scrolling tool for VS2013 and VS2015
 Additional features:
 * Hold shift key to Scroll horizontally.
 * Hold Alt key to scroll text view by one page up/down.

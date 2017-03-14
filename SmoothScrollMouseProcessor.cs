@@ -16,11 +16,8 @@ namespace SmoothScroll
 		private bool SmoothEnable { get; set; }
 
 		private double SpeedRatio = 1.1, TimeRatio = 1;
-		private int totalSteps;
 
 		private readonly ScrollController VerticalController, HorizontalController;
-
-		private const int InitSteps = 40;
 
 		internal SmoothScrollMouseProcessor(IWpfTextView _wpfTextView)
 		{
@@ -43,7 +40,6 @@ namespace SmoothScroll
 			SmoothEnable = SmoothScrollPackage.OptionsPage.SmoothEnable;
 			SpeedRatio = SmoothScrollPackage.OptionsPage.SpeedRatio;
 			TimeRatio = SmoothScrollPackage.OptionsPage.TimeRatio;
-			totalSteps = (int) (InitSteps * TimeRatio);
 		}
 
 		public override void PreprocessMouseWheel(MouseWheelEventArgs e)
@@ -80,11 +76,11 @@ namespace SmoothScroll
 		{
 			if (direction == ScrollingDirection.Vertical)
 			{
-				VerticalController.StartScroll(distance * SpeedRatio, totalSteps);
+				VerticalController.StartScroll(distance * SpeedRatio, TimeRatio);
 			}
 			else
 			{
-				HorizontalController.StartScroll(distance * SpeedRatio, totalSteps);
+				HorizontalController.StartScroll(distance * SpeedRatio, TimeRatio);
 			}
 		}
 	}

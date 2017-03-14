@@ -104,13 +104,5 @@ namespace SmoothScroll
 				aLtEnable = value;
 			}
 		}
-
-		public OptionsPage()
-		{
-			if (SmoothScrollPackage.OptionsPage == null)
-			{
-				SmoothScrollPackage.OptionsPage = this;
-			}
-		}
 	}
 }

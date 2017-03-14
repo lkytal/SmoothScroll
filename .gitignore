@@ -47,3 +47,6 @@ Key.snk
 /packages
 *.vsix
 *.TaskCanvasSL
+*.vsps
+*.vspx
+*.psess

@@ -9,7 +9,8 @@ namespace SmoothScroll
 	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable")]
 	internal class ScrollController
 	{
-		private const int Interval = 14;
+		private const int Interval = 16;
+		private const int InitTime = 640;
 		private const double accelerator = 1.4;
 
 		private readonly object Locker = new object();
@@ -36,7 +37,16 @@ namespace SmoothScroll
 			dpiRatio = SystemParameters.PrimaryScreenHeight / 1080.0;
 		}
 
-		public void StartScroll(double distance, int maxTotalSteps)
+		private int CalulateTotalSteps(double timeRatio)
+		{
+			int maxTotalSteps = (int)(InitTime * timeRatio / Interval);
+
+			double stepsRatio = Math.Sqrt(Math.Abs(total / dpiRatio) / 600);
+
+			return (int)(maxTotalSteps * Math.Min(stepsRatio, 1));
+		}
+
+		public void StartScroll(double distance, double timeRatio)
 		{
 			lock (Locker)
 			{
@@ -56,9 +66,7 @@ namespace SmoothScroll
 					total = remain;
 				}
 
-				double stepsRatio = Math.Sqrt(Math.Abs(total / dpiRatio) / 400);
-
-				totalSteps = (int)(maxTotalSteps * Math.Min(stepsRatio, 1));
+				totalSteps = CalulateTotalSteps(timeRatio);
 
 				round = 0;
 
@@ -85,7 +93,7 @@ namespace SmoothScroll
 
 		private int AmountToScroll()
 		{
-			double rate = (double) round / totalSteps;
+			double percent = (double) round / totalSteps;
 
 			double stepLength;
 
@@ -94,15 +102,13 @@ namespace SmoothScroll
 			//stepLength = (total / 16.19) * (1 - Math.Sqrt(rate));
 			//stepLength = (total / 38.25) * Math.Cos(rate * (2 / Math.PI));
 
-			double meanLength = total / (totalSteps / 2.0 + 10);
-
-			if (rate > 0.333)
+			if (percent > 0.5)
 			{
 				stepLength = remain / 10;
 			}
 			else
 			{
-				stepLength = meanLength;
+				stepLength = total / (totalSteps * 0.5 + 10);
 			}
 
 			return (int)Math.Round(stepLength);
