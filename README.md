@@ -1,7 +1,8 @@
 # SmoothScroll
 Smooth scrolling for the Visual Studio 2013, 2015 and 2017
 
-Smooth scrolling on visual studio gallery : https://visualstudiogallery.msdn.microsoft.com/30b1f9a2-845d-48f2-aafc-98ece8817a87
+Smooth scrolling on visual studio market:
+https://marketplace.visualstudio.com/items?itemName=lkytal.SmoothScroll
 
 Additional features:
 * Hold shift key to Scroll horizontally.
@@ -13,6 +14,7 @@ preview:
 
 Update Log:
 
+* 2.5.2 : Slient speed up when begining
 * 2.5.0 : Support for visual Studio 2017
 * 2.4.0 : Adaptive scroll duration
 * 2.3.2 : Fixup improper dispose
@@ -29,10 +31,10 @@ Update Log:
 
 My other extentions :
 
-StatusInfo
-
-https://visualstudiogallery.msdn.microsoft.com/cd28d8ed-78eb-45f4-b8c2-a024631d499a
-
 BuildinCmd
 
-https://visualstudiogallery.msdn.microsoft.com/aa5229b1-8490-47fd-8c1c-1c35e92c61cc
+https://marketplace.visualstudio.com/items?itemName=lkytal.BuiltinCmd
+
+StatusInfo
+
+https://marketplace.visualstudio.com/items?itemName=lkytal.StatusInfo

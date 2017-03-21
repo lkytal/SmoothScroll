@@ -50,25 +50,19 @@ namespace SmoothScroll
 		{
 			lock (Locker)
 			{
-				if (round == totalSteps)
+				if (Math.Sign(distance) != Math.Sign(remain))
 				{
-					total = distance;
-					remain = distance;
-				}
-				else if (Math.Sign(distance) != Math.Sign(remain))
-				{
-					total = distance;
 					remain = distance;
 				}
 				else
 				{
-					remain += distance * accelerator;
-					total = remain;
+					remain += distance * (round == totalSteps? 1 : accelerator);
 				}
 
-				totalSteps = CalulateTotalSteps(timeRatio);
-
 				round = 0;
+				total = remain;
+
+				totalSteps = CalulateTotalSteps(timeRatio);
 
 				timer.Change(0, Interval);
 			}
@@ -99,7 +93,6 @@ namespace SmoothScroll
 
 			//stepLength = (2 * total / totalSteps) * (1 - rate);
 			//stepLength = (total / 16.17) * Math.Pow(1 - rate, 2);
-			//stepLength = (total / 16.19) * (1 - Math.Sqrt(rate));
 			//stepLength = (total / 38.25) * Math.Cos(rate * (2 / Math.PI));
 
 			if (percent > 0.5)
@@ -108,7 +101,8 @@ namespace SmoothScroll
 			}
 			else
 			{
-				stepLength = total / (totalSteps * 0.5 + 10);
+				double meanSpeed = total / (2 * totalSteps * 0.5 + 10);
+				stepLength = meanSpeed * (3 - 4.0 * percent);
 			}
 
 			return (int)Math.Round(stepLength);
