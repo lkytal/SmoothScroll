@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.Text.Editor;
-using System;
 using System.Windows.Input;
 using System.Windows.Threading;
 
@@ -51,7 +50,7 @@ namespace SmoothScroll
 
 			if (ShiftEnable && (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift)))
 			{
-				StartScroll(e.Delta, ScrollingDirection.Horizental);
+				StartScroll(-e.Delta, ScrollingDirection.Horizental);
 
 				e.Handled = true;
 				return;

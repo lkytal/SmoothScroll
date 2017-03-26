@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("SmoothScroll")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Smooth Scroll extension for VS2013, 2015 and 2017")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("SmoothScroll")]

@@ -1,5 +1,6 @@
 using Microsoft.VisualStudio.Text.Editor;
 using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
@@ -41,7 +42,7 @@ namespace SmoothScroll
 		{
 			int maxTotalSteps = (int)(InitTime * timeRatio / Interval);
 
-			double stepsRatio = Math.Sqrt(Math.Abs(total / dpiRatio) / 600);
+			double stepsRatio = Math.Sqrt(Math.Abs(total / dpiRatio) / 720);
 
 			return (int)(maxTotalSteps * Math.Min(stepsRatio, 1));
 		}
@@ -52,11 +53,11 @@ namespace SmoothScroll
 			{
 				if (Math.Sign(distance) != Math.Sign(remain))
 				{
-					remain = distance;
+					remain = (int)distance;
 				}
 				else
 				{
-					remain += distance * (round == totalSteps? 1 : accelerator);
+					remain += (int)(distance * (round == totalSteps? 1 : accelerator));
 				}
 
 				round = 0;
@@ -91,21 +92,25 @@ namespace SmoothScroll
 
 			double stepLength;
 
-			//stepLength = (2 * total / totalSteps) * (1 - rate);
-			//stepLength = (total / 16.17) * Math.Pow(1 - rate, 2);
-			//stepLength = (total / 38.25) * Math.Cos(rate * (2 / Math.PI));
+			stepLength = (2 * total / totalSteps) * (1 - percent);
+			//stepLength = (total / 16.17) * Math.Pow(1 - percent, 2);
+			//stepLength = (total / 38.25) * Math.Cos(percent * (2 / Math.PI));
 
-			if (percent > 0.5)
-			{
-				stepLength = remain / 10;
-			}
-			else
-			{
-				double meanSpeed = total / (2 * totalSteps * 0.5 + 10);
-				stepLength = meanSpeed * (3 - 4.0 * percent);
-			}
+			//if (percent > 0.5)
+			//{
+			//	stepLength = remain / 10;
+			//}
+			//else
+			//{
+			//	double meanSpeed = total / (2 * totalSteps * 0.5 + 10);
+			//	stepLength = meanSpeed * (3 - 4.0 * percent);
+			//}
 
-			return (int)Math.Round(stepLength);
+			int result = (int)Math.Round(stepLength);
+
+			Debug.WriteLine($"{remain} ===> {result}");
+
+			return result;
 		}
 
 		private void StopScroll()
@@ -117,11 +122,9 @@ namespace SmoothScroll
 
 		private void ScrollingThread(object obj)
 		{
-			int stepLength;
-
 			lock (Locker)
 			{
-				stepLength = AmountToScroll();
+				var stepLength = AmountToScroll();
 
 				if (round == totalSteps || stepLength == 0)
 				{
@@ -131,9 +134,9 @@ namespace SmoothScroll
 
 				round += 1;
 				remain -= stepLength;
-			}
 
-			Scroll(stepLength);
+				Scroll(stepLength);
+			}
 		}
 	}
 

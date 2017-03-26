@@ -1,19 +1,22 @@
 # SmoothScroll
+
 Smooth scrolling for the Visual Studio 2013, 2015 and 2017
 
 Smooth scrolling on visual studio market:
 https://marketplace.visualstudio.com/items?itemName=lkytal.SmoothScroll
 
-Additional features:
+## Additional features:
 * Hold shift key to Scroll horizontally.
 * Hold Alt key to scroll text view by one page up/down.
-* Let me know if you have questions or suggestions.
+
+Let me know if you have questions or suggestions.
 
 preview:
-![ScreenShot](https://dn-lkytal.qbox.me/ss.gif)
+![ScreenShot](http://lkytal.qiniudn.com/ss.gif)
 
-Update Log:
+## Update Log:
 
+* 2.5.3 : Fix horizental scroll directing
 * 2.5.2 : Slient speed up when begining
 * 2.5.0 : Support for visual Studio 2017
 * 2.4.0 : Adaptive scroll duration
@@ -29,12 +32,13 @@ Update Log:
 * 1.2.0 : Scrolling algorithm improved
 * 1.1.0 : Scrolling interval changed
 
-My other extentions :
+## My other extentions :
 
-BuildinCmd
+- ### [BuildinCmd](https://marketplace.visualstudio.com/items?itemName=lkytal.BuiltinCmd)
+- ### [StatusInfo](https://marketplace.visualstudio.com/items?itemName=lkytal.StatusInfo)
+- ### [AutoZoom](https://marketplace.visualstudio.com/items?itemName=lkytal.AutoZoom)
+  
+## Acknowledgment
 
-https://marketplace.visualstudio.com/items?itemName=lkytal.BuiltinCmd
+> <div>Icons made by <a href="http://www.flaticon.com/authors/vectors-market" title="Vectors Market">Vectors Market</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
 
-StatusInfo
-
-https://marketplace.visualstudio.com/items?itemName=lkytal.StatusInfo
