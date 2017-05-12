@@ -38,11 +38,11 @@ namespace SmoothScroll
 			dpiRatio = SystemParameters.PrimaryScreenHeight / 1080.0;
 		}
 
-		private int CalulateTotalSteps(double timeRatio)
+		private int CalulateTotalSteps(double timeRatio, double totalDistance)
 		{
 			int maxTotalSteps = (int)(InitTime * timeRatio / Interval);
 
-			double stepsRatio = Math.Sqrt(Math.Abs(total / dpiRatio) / 720);
+			double stepsRatio = Math.Sqrt(Math.Abs(totalDistance / dpiRatio) / 720);
 
 			return (int)(maxTotalSteps * Math.Min(stepsRatio, 1));
 		}
@@ -53,20 +53,20 @@ namespace SmoothScroll
 			{
 				if (Math.Sign(distance) != Math.Sign(remain))
 				{
-					remain = (int)distance;
+					remain = (int) distance;
 				}
 				else
 				{
-					remain += (int)(distance * (round == totalSteps? 1 : accelerator));
+					remain += (int) (distance * (round == totalSteps ? 1 : accelerator));
 				}
 
 				round = 0;
 				total = remain;
-
-				totalSteps = CalulateTotalSteps(timeRatio);
-
-				timer.Change(0, Interval);
 			}
+
+			totalSteps = CalulateTotalSteps(timeRatio, total);
+
+			timer?.Change(0, Interval);
 		}
 
 		private void Scroll(double value)
@@ -113,11 +113,15 @@ namespace SmoothScroll
 			return result;
 		}
 
-		private void StopScroll()
+		public void StopScroll()
 		{
 			timer.Change(Timeout.Infinite, Interval);
-			round = totalSteps;
-			total = remain = 0;
+
+			lock (Locker)
+			{
+				round = totalSteps;
+				total = remain = 0;
+			}
 		}
 
 		private void ScrollingThread(object obj)

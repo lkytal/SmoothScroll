@@ -4,15 +4,14 @@ using System.Windows.Threading;
 
 namespace SmoothScroll
 {
-	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable")]
 	internal sealed class SmoothScrollMouseProcessor : MouseProcessorBase
 	{
 		private readonly IWpfTextView WpfTextView;
 
-		private bool ExtEnable { get; set; }
-		private bool ShiftEnable { get; set; }
-		private bool AltEnable { get; set; }
-		private bool SmoothEnable { get; set; }
+		private bool ExtEnable { get; set; } = true;
+		private bool ShiftEnable { get; set; } = true;
+		private bool AltEnable { get; set; } = true;
+		private bool SmoothEnable { get; set; } = true;
 
 		private double SpeedRatio = 1.1, TimeRatio = 1;
 
@@ -48,17 +47,17 @@ namespace SmoothScroll
 				return;
 			}
 
-			if (ShiftEnable && (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift)))
+			if (AltEnable && (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)))
 			{
-				StartScroll(-e.Delta, ScrollingDirection.Horizental);
+				WpfTextView.ViewScroller.ScrollViewportVerticallyByPage(e.Delta < 0 ? ScrollDirection.Down : ScrollDirection.Up);
 
 				e.Handled = true;
 				return;
 			}
 
-			if (AltEnable && (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)))
+			if (ShiftEnable && (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift)))
 			{
-				WpfTextView.ViewScroller.ScrollViewportVerticallyByPage(e.Delta < 0 ? ScrollDirection.Down : ScrollDirection.Up);
+				StartScroll(-e.Delta, ScrollingDirection.Horizental);
 
 				e.Handled = true;
 				return;
@@ -69,6 +68,12 @@ namespace SmoothScroll
 				StartScroll(e.Delta, ScrollingDirection.Vertical);
 				e.Handled = true;
 			}
+		}
+
+		public override void PostprocessMouseDown(MouseButtonEventArgs e)
+		{
+			VerticalController.StopScroll();
+			HorizontalController.StopScroll();
 		}
 
 		private void StartScroll(double distance, ScrollingDirection direction)
