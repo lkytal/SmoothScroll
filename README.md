@@ -2,10 +2,11 @@
 
 Smooth scrolling for the Visual Studio 2013, 2015 and 2017
 
-Smooth scrolling on visual studio market:
-https://marketplace.visualstudio.com/items?itemName=lkytal.SmoothScroll
+Install [Smooth scrolling](
+https://marketplace.visualstudio.com/items?itemName=lkytal.SmoothScroll) via visual studio market
 
-## Additional features:
+## Additional features
+
 * Hold shift key to Scroll horizontally.
 * Hold Alt key to scroll text view by one page up/down.
 
@@ -14,8 +15,9 @@ Let me know if you have questions or suggestions.
 preview:
 ![ScreenShot](http://lkytal.qiniudn.com/ss.gif)
 
-## Update Log:
+## Update Log
 
+* 2.6.0 : Stop scroll on mouse click; no longer require reopen editor after setting changed.
 * 2.5.3 : Fix horizental scroll directing
 * 2.5.2 : Slient speed up when begining
 * 2.5.0 : Support for visual Studio 2017
@@ -41,4 +43,3 @@ preview:
 ## Acknowledgment
 
 > <div>Icons made by <a href="http://www.flaticon.com/authors/vectors-market" title="Vectors Market">Vectors Market</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
-

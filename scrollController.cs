@@ -26,7 +26,6 @@ namespace SmoothScroll
 		private double total, remain;
 		private int totalSteps, round;
 
-
 		public ScrollController(Dispatcher _DispatcherAgent, IWpfTextView _WpfTextView, ScrollingDirection _direction)
 		{
 			DispatcherAgent = _DispatcherAgent;

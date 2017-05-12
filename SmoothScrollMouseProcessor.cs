@@ -8,12 +8,14 @@ namespace SmoothScroll
 	{
 		private readonly IWpfTextView WpfTextView;
 
-		private bool ExtEnable { get; set; } = true;
-		private bool ShiftEnable { get; set; } = true;
-		private bool AltEnable { get; set; } = true;
-		private bool SmoothEnable { get; set; } = true;
+		private bool ExtEnable => SmoothScrollPackage.OptionsPage?.ExtEnable ?? true;
 
-		private double SpeedRatio = 1.1, TimeRatio = 1;
+		private bool ShiftEnable => SmoothScrollPackage.OptionsPage?.ShiftEnable ?? true;
+		private bool AltEnable => SmoothScrollPackage.OptionsPage?.AltEnable ?? true;
+		private bool SmoothEnable => SmoothScrollPackage.OptionsPage?.SmoothEnable ?? true;
+
+		private double SpeedRatio => SmoothScrollPackage.OptionsPage?.SpeedRatio ?? 1.1;
+		private double TimeRatio => SmoothScrollPackage.OptionsPage?.TimeRatio ?? 1;
 
 		private readonly ScrollController VerticalController, HorizontalController;
 
@@ -21,23 +23,8 @@ namespace SmoothScroll
 		{
 			this.WpfTextView = _wpfTextView;
 
-			if (SmoothScrollPackage.OptionsPage != null)
-			{
-				ReadOption();
-			}
-
 			VerticalController = new ScrollController(Dispatcher.CurrentDispatcher, WpfTextView, ScrollingDirection.Vertical);
 			HorizontalController = new ScrollController(Dispatcher.CurrentDispatcher, WpfTextView, ScrollingDirection.Horizental);
-		}
-
-		private void ReadOption()
-		{
-			ShiftEnable = SmoothScrollPackage.OptionsPage.ShiftEnable;
-			AltEnable = SmoothScrollPackage.OptionsPage.AltEnable;
-			ExtEnable = SmoothScrollPackage.OptionsPage.ExtEnable;
-			SmoothEnable = SmoothScrollPackage.OptionsPage.SmoothEnable;
-			SpeedRatio = SmoothScrollPackage.OptionsPage.SpeedRatio;
-			TimeRatio = SmoothScrollPackage.OptionsPage.TimeRatio;
 		}
 
 		public override void PreprocessMouseWheel(MouseWheelEventArgs e)
