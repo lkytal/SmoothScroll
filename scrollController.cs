@@ -11,7 +11,7 @@ namespace SmoothScroll
 	internal class ScrollController
 	{
 		private const int Interval = 16;
-		private const int InitTime = 640;
+		private const int InitTime = 560;
 		private const double accelerator = 1.4;
 
 		private readonly object Locker = new object();
@@ -107,7 +107,7 @@ namespace SmoothScroll
 
 			int result = (int)Math.Round(stepLength);
 
-			Debug.WriteLine($"{remain} ===> {result}");
+			//Debug.WriteLine($"{remain} ===> {result}");
 
 			return result;
 		}

@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.Text.Editor;
+﻿using System.Diagnostics;
+using Microsoft.VisualStudio.Text.Editor;
 using System.Windows.Input;
 using System.Windows.Threading;
 
@@ -9,11 +10,9 @@ namespace SmoothScroll
 		private readonly IWpfTextView WpfTextView;
 
 		private bool ExtEnable => SmoothScrollPackage.OptionsPage?.ExtEnable ?? true;
-
 		private bool ShiftEnable => SmoothScrollPackage.OptionsPage?.ShiftEnable ?? true;
 		private bool AltEnable => SmoothScrollPackage.OptionsPage?.AltEnable ?? true;
 		private bool SmoothEnable => SmoothScrollPackage.OptionsPage?.SmoothEnable ?? true;
-
 		private double SpeedRatio => SmoothScrollPackage.OptionsPage?.SpeedRatio ?? 1.1;
 		private double TimeRatio => SmoothScrollPackage.OptionsPage?.TimeRatio ?? 1;
 
@@ -52,6 +51,12 @@ namespace SmoothScroll
 
 			if (SmoothEnable)
 			{
+				if (!NativeMethods.IsMouseEvent())
+				{
+					Trace.WriteLine("Touch");
+					return;
+				}
+
 				StartScroll(e.Delta, ScrollingDirection.Vertical);
 				e.Handled = true;
 			}
