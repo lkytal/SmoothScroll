@@ -204,6 +204,7 @@
     <Compile Include="OptionsPage.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="PageScroller.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScrollController.cs" />
     <Compile Include="SmoothScrollMouseProcessor.cs" />

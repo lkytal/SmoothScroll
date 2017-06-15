@@ -21,9 +21,9 @@ namespace SmoothScroll
 		internal SmoothScrollMouseProcessor(IWpfTextView _wpfTextView)
 		{
 			this.WpfTextView = _wpfTextView;
-
-			VerticalController = new ScrollController(Dispatcher.CurrentDispatcher, WpfTextView, ScrollingDirection.Vertical);
-			HorizontalController = new ScrollController(Dispatcher.CurrentDispatcher, WpfTextView, ScrollingDirection.Horizental);
+			var pageScroller = new PageScroller(Dispatcher.CurrentDispatcher, WpfTextView);
+			VerticalController = new ScrollController(pageScroller, ScrollingDirection.Vertical);
+			HorizontalController = new ScrollController(pageScroller, ScrollingDirection.Horizental);
 		}
 
 		public override void PreprocessMouseWheel(MouseWheelEventArgs e)

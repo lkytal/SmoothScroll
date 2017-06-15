@@ -13,23 +13,19 @@ namespace SmoothScroll
 		private const int Interval = 16;
 		private const int InitTime = 560;
 		private const double accelerator = 1.4;
+		private readonly double dpiRatio;
 
 		private readonly object Locker = new object();
 		private readonly Timer timer;
-
-		private readonly Dispatcher DispatcherAgent;
-		private readonly IWpfTextView WpfTextView;
+		private readonly PageScroller pageScroller;
 		private readonly ScrollingDirection direction;
-
-		private readonly double dpiRatio;
 
 		private double total, remain;
 		private int totalSteps, round;
 
-		public ScrollController(Dispatcher _DispatcherAgent, IWpfTextView _WpfTextView, ScrollingDirection _direction)
+		public ScrollController(PageScroller _pageScroller, ScrollingDirection _direction)
 		{
-			DispatcherAgent = _DispatcherAgent;
-			WpfTextView = _WpfTextView;
+			pageScroller = _pageScroller;
 			direction = _direction;
 
 			timer = new Timer(ScrollingThread, null, Timeout.Infinite, Interval);
@@ -68,23 +64,6 @@ namespace SmoothScroll
 			timer?.Change(0, Interval);
 		}
 
-		private void Scroll(double value)
-		{
-			Action act = () =>
-			{
-				if (direction == ScrollingDirection.Vertical)
-				{
-					WpfTextView.ViewScroller.ScrollViewportVerticallyByPixels(value);
-				}
-				else if (direction == ScrollingDirection.Horizental)
-				{
-					WpfTextView.ViewScroller.ScrollViewportHorizontallyByPixels(value);
-				}
-			};
-
-			DispatcherAgent.BeginInvoke(act);
-		}
-
 		private int AmountToScroll()
 		{
 			double percent = (double) round / totalSteps;
@@ -114,7 +93,7 @@ namespace SmoothScroll
 
 		public void StopScroll()
 		{
-			timer.Change(Timeout.Infinite, Interval);
+			timer?.Change(Timeout.Infinite, Interval);
 
 			lock (Locker)
 			{
@@ -138,7 +117,7 @@ namespace SmoothScroll
 				round += 1;
 				remain -= stepLength;
 
-				Scroll(stepLength);
+				pageScroller.Scroll(direction, stepLength);
 			}
 		}
 	}
