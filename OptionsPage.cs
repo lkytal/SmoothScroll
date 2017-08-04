@@ -13,14 +13,14 @@ namespace SmoothScroll
 		public bool ExtEnable { get; set; } = true;
 
 		[Category("General")]
-		[Description("Distance Ratio of scrolling, indicates how long to scroll.")]
+		[Description("Ratio of scrolling distance, indicates how long to scroll.")]
 		[DisplayName("Distance Ratio")]
 		public double SpeedRatio { get; set; } = 1.2;
 
 		[Category("General")]
 		[Description("Indicates scrolling animation duration.")]
 		[DisplayName("Animation duration Ratio")]
-		public double TimeRatio { get; set; } = 1.0;
+		public double DurationRatio { get; set; } = 1.0;
 
 		[Category("Features")]
 		[Description("Enable Smooth Scroll or not.")]

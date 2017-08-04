@@ -11,7 +11,7 @@ namespace SmoothScroll
 	internal class ScrollController
 	{
 		private const int Interval = 16;
-		private const int InitTime = 560;
+		private const int Duration = 560;
 		private const double accelerator = 1.4;
 		private readonly double dpiRatio;
 
@@ -20,8 +20,8 @@ namespace SmoothScroll
 		private readonly PageScroller pageScroller;
 		private readonly ScrollingDirection direction;
 
-		private double total, remain;
-		private int totalSteps, round;
+		private double totalDistance, remain;
+		private int totalRounds, round;
 
 		public ScrollController(PageScroller _pageScroller, ScrollingDirection _direction)
 		{
@@ -33,16 +33,16 @@ namespace SmoothScroll
 			dpiRatio = SystemParameters.PrimaryScreenHeight / 1080.0;
 		}
 
-		private int CalulateTotalSteps(double timeRatio, double totalDistance)
+		private int CalulateTotalRounds(double timeRatio, double requestDistance)
 		{
-			int maxTotalSteps = (int)(InitTime * timeRatio / Interval);
+			int maxTotalSteps = (int)(Duration * timeRatio / Interval);
 
-			double stepsRatio = Math.Sqrt(Math.Abs(totalDistance / dpiRatio) / 720);
+			double stepsRatio = Math.Sqrt(Math.Abs(requestDistance / dpiRatio) / 720);
 
 			return (int)(maxTotalSteps * Math.Min(stepsRatio, 1));
 		}
 
-		public void StartScroll(double distance, double timeRatio)
+		public void ScrollView(double distance, double intervalRatio)
 		{
 			lock (Locker)
 			{
@@ -52,25 +52,25 @@ namespace SmoothScroll
 				}
 				else
 				{
-					remain += (int) (distance * (round == totalSteps ? 1 : accelerator));
+					remain += (int) (distance * (round == totalRounds ? 1 : accelerator));
 				}
 
 				round = 0;
-				total = remain;
+				totalDistance = remain;
 			}
 
-			totalSteps = CalulateTotalSteps(timeRatio, total);
+			totalRounds = CalulateTotalRounds(intervalRatio, totalDistance);
 
 			timer?.Change(0, Interval);
 		}
 
-		private int AmountToScroll()
+		private int CalculateScrollDistance()
 		{
-			double percent = (double) round / totalSteps;
+			double percent = (double) round / totalRounds;
 
 			double stepLength;
 
-			stepLength = (2 * total / totalSteps) * (1 - percent);
+			stepLength = (2 * totalDistance / totalRounds) * (1 - percent);
 			//stepLength = (total / 16.17) * Math.Pow(1 - percent, 2);
 			//stepLength = (total / 38.25) * Math.Cos(percent * (2 / Math.PI));
 
@@ -91,14 +91,14 @@ namespace SmoothScroll
 			return result;
 		}
 
-		public void StopScroll()
+		public void FinishScroll()
 		{
 			timer?.Change(Timeout.Infinite, Interval);
 
 			lock (Locker)
 			{
-				round = totalSteps;
-				total = remain = 0;
+				round = totalRounds;
+				totalDistance = remain = 0;
 			}
 		}
 
@@ -106,11 +106,11 @@ namespace SmoothScroll
 		{
 			lock (Locker)
 			{
-				var stepLength = AmountToScroll();
+				var stepLength = CalculateScrollDistance();
 
-				if (round == totalSteps || stepLength == 0)
+				if (stepLength == 0 || round == totalRounds)
 				{
-					StopScroll();
+					FinishScroll();
 					return;
 				}
 

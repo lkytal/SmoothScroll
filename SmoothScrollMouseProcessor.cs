@@ -14,7 +14,7 @@ namespace SmoothScroll
 		private bool AltEnable => SmoothScrollPackage.OptionsPage?.AltEnable ?? true;
 		private bool SmoothEnable => SmoothScrollPackage.OptionsPage?.SmoothEnable ?? true;
 		private double SpeedRatio => SmoothScrollPackage.OptionsPage?.SpeedRatio ?? 1.1;
-		private double TimeRatio => SmoothScrollPackage.OptionsPage?.TimeRatio ?? 1;
+		private double DurationRatio => SmoothScrollPackage.OptionsPage?.DurationRatio ?? 1;
 
 		private readonly ScrollController VerticalController, HorizontalController;
 
@@ -43,7 +43,7 @@ namespace SmoothScroll
 
 			if (ShiftEnable && (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift)))
 			{
-				StartScroll(-e.Delta, ScrollingDirection.Horizental);
+				postScrollRequest(-e.Delta, ScrollingDirection.Horizental);
 
 				e.Handled = true;
 				return;
@@ -57,26 +57,26 @@ namespace SmoothScroll
 					return;
 				}
 
-				StartScroll(e.Delta, ScrollingDirection.Vertical);
+				postScrollRequest(e.Delta, ScrollingDirection.Vertical);
 				e.Handled = true;
 			}
 		}
 
 		public override void PostprocessMouseDown(MouseButtonEventArgs e)
 		{
-			VerticalController.StopScroll();
-			HorizontalController.StopScroll();
+			VerticalController.FinishScroll();
+			HorizontalController.FinishScroll();
 		}
 
-		private void StartScroll(double distance, ScrollingDirection direction)
+		private void postScrollRequest(double distance, ScrollingDirection direction)
 		{
 			if (direction == ScrollingDirection.Vertical)
 			{
-				VerticalController.StartScroll(distance * SpeedRatio, TimeRatio);
+				VerticalController.ScrollView(distance * SpeedRatio, DurationRatio);
 			}
 			else
 			{
-				HorizontalController.StartScroll(distance * SpeedRatio, TimeRatio);
+				HorizontalController.ScrollView(distance * SpeedRatio, DurationRatio);
 			}
 		}
 	}
