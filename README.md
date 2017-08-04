@@ -13,10 +13,11 @@ https://marketplace.visualstudio.com/items?itemName=lkytal.SmoothScroll) via Vis
 Let me know if you have questions or suggestions.
 
 Preview:
-![ScreenShot](smooth.gif)
+![ScreenShot](Resources/smooth.gif)
 
 ## Update Log
 
+* 2.7.0: Performance enhancement.
 * 2.6.0: Stop scroll on mouse click; no longer require reopen editor after setting changed.
 * 2.5.3: Fix horizental scroll directing.
 * 2.5.2: Slient speed up when begining.

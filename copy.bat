@@ -1,0 +1,1 @@
+copy bin\Release\SmoothScroll.vsix SmoothScroll.vsix /y

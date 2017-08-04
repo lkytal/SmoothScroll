@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,7 +31,7 @@ namespace SmoothScroll
 		/// </summary>
 		/// <returns>The extra information provided by Windows API</returns>
 		[DllImport("user32.dll")]
-		private static extern ulong GetMessageExtraInfo();
+		private static extern uint GetMessageExtraInfo();
 
 		/// <summary>
 		/// Determines what input device triggered the mouse event.
@@ -43,7 +42,7 @@ namespace SmoothScroll
 		/// </returns>
 		public static MouseEventSource GetMouseEventSource()
 		{
-			ulong extra = GetMessageExtraInfo();
+			var extra = GetMessageExtraInfo();
 			bool isTouchOrPen = ((extra & 0xFFFFFF00) == 0xFF515700);
 
 			if (!isTouchOrPen)

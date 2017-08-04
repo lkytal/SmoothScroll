@@ -16,19 +16,18 @@ namespace SmoothScroll
 		private readonly double dpiRatio;
 
 		private readonly object Locker = new object();
-		private readonly Timer timer;
 		private readonly PageScroller pageScroller;
 		private readonly ScrollingDirection direction;
 
 		private double totalDistance, remain;
 		private int totalRounds, round;
 
+		private Thread workingThread;
+
 		public ScrollController(PageScroller _pageScroller, ScrollingDirection _direction)
 		{
 			pageScroller = _pageScroller;
 			direction = _direction;
-
-			timer = new Timer(ScrollingThread, null, Timeout.Infinite, Interval);
 
 			dpiRatio = SystemParameters.PrimaryScreenHeight / 1080.0;
 		}
@@ -48,11 +47,11 @@ namespace SmoothScroll
 			{
 				if (Math.Sign(distance) != Math.Sign(remain))
 				{
-					remain = (int) distance;
+					remain = (int)distance;
 				}
 				else
 				{
-					remain += (int) (distance * (round == totalRounds ? 1 : accelerator));
+					remain += (int)(distance * (round < 3 ? 1 : accelerator));
 				}
 
 				round = 0;
@@ -61,28 +60,19 @@ namespace SmoothScroll
 
 			totalRounds = CalulateTotalRounds(intervalRatio, totalDistance);
 
-			timer?.Change(0, Interval);
+			if (!workingThread.IsAlive)
+			{
+				workingThread = new Thread(ScrollingThread);
+			}
+
+			workingThread.Start();
 		}
 
 		private int CalculateScrollDistance()
 		{
-			double percent = (double) round / totalRounds;
+			double percent = (double)round / totalRounds;
 
-			double stepLength;
-
-			stepLength = (2 * totalDistance / totalRounds) * (1 - percent);
-			//stepLength = (total / 16.17) * Math.Pow(1 - percent, 2);
-			//stepLength = (total / 38.25) * Math.Cos(percent * (2 / Math.PI));
-
-			//if (percent > 0.5)
-			//{
-			//	stepLength = remain / 10;
-			//}
-			//else
-			//{
-			//	double meanSpeed = total / (2 * totalSteps * 0.5 + 10);
-			//	stepLength = meanSpeed * (3 - 4.0 * percent);
-			//}
+			var stepLength = 2 * totalDistance / totalRounds * (1 - percent);
 
 			int result = (int)Math.Round(stepLength);
 
@@ -93,31 +83,41 @@ namespace SmoothScroll
 
 		public void FinishScroll()
 		{
-			timer?.Change(Timeout.Infinite, Interval);
-
 			lock (Locker)
 			{
 				round = totalRounds;
 				totalDistance = remain = 0;
 			}
+
+			workingThread?.Abort();
 		}
 
 		private void ScrollingThread(object obj)
 		{
-			lock (Locker)
+			while (round <= totalRounds)
 			{
 				var stepLength = CalculateScrollDistance();
 
-				if (stepLength == 0 || round == totalRounds)
+				if (stepLength == 0)
 				{
-					FinishScroll();
-					return;
+					break;
 				}
 
-				round += 1;
-				remain -= stepLength;
+				lock (Locker)
+				{
+					round += 1;
+					remain -= stepLength;
+				}
 
 				pageScroller.Scroll(direction, stepLength);
+
+				Thread.Sleep(Interval);
+			}
+
+			lock (Locker)
+			{
+				round = totalRounds;
+				totalDistance = remain = 0;
 			}
 		}
 	}
