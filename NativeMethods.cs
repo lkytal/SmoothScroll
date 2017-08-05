@@ -31,7 +31,7 @@ namespace SmoothScroll
 		/// </summary>
 		/// <returns>The extra information provided by Windows API</returns>
 		[DllImport("user32.dll")]
-		private static extern uint GetMessageExtraInfo();
+		private static extern ulong GetMessageExtraInfo();
 
 		/// <summary>
 		/// Determines what input device triggered the mouse event.

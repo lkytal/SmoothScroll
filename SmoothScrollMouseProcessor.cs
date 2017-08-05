@@ -64,8 +64,8 @@ namespace SmoothScroll
 
 		public override void PostprocessMouseDown(MouseButtonEventArgs e)
 		{
-			VerticalController.FinishScroll();
-			HorizontalController.FinishScroll();
+			VerticalController.StopScroll();
+			HorizontalController.StopScroll();
 		}
 
 		private void postScrollRequest(double distance, ScrollingDirection direction)

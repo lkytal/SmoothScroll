@@ -3,7 +3,6 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Windows;
-using System.Windows.Threading;
 
 namespace SmoothScroll
 {
@@ -12,7 +11,8 @@ namespace SmoothScroll
 	{
 		private const int Interval = 16;
 		private const int Duration = 560;
-		private const double accelerator = 1.4;
+		private const int AccelerateThreshold = 2;
+		private const double Accelerator = 1.4;
 		private readonly double dpiRatio;
 
 		private readonly object Locker = new object();
@@ -51,7 +51,7 @@ namespace SmoothScroll
 				}
 				else
 				{
-					remain += (int)(distance * (round < 3 ? 1 : accelerator));
+					remain += (int)(distance * (round < AccelerateThreshold ? 1 : Accelerator));
 				}
 
 				round = 0;
@@ -60,12 +60,11 @@ namespace SmoothScroll
 
 			totalRounds = CalulateTotalRounds(intervalRatio, totalDistance);
 
-			if (!workingThread.IsAlive)
+			if (workingThread == null)
 			{
 				workingThread = new Thread(ScrollingThread);
+				workingThread.Start();
 			}
-
-			workingThread.Start();
 		}
 
 		private int CalculateScrollDistance()
@@ -81,15 +80,22 @@ namespace SmoothScroll
 			return result;
 		}
 
-		public void FinishScroll()
+		public void StopScroll()
+		{
+			workingThread?.Abort();
+
+			CleanupScroll();
+		}
+
+		private void CleanupScroll()
 		{
 			lock (Locker)
 			{
 				round = totalRounds;
 				totalDistance = remain = 0;
-			}
 
-			workingThread?.Abort();
+				workingThread = null;
+			}
 		}
 
 		private void ScrollingThread(object obj)
@@ -114,11 +120,7 @@ namespace SmoothScroll
 				Thread.Sleep(Interval);
 			}
 
-			lock (Locker)
-			{
-				round = totalRounds;
-				totalDistance = remain = 0;
-			}
+			CleanupScroll();
 		}
 	}
 
