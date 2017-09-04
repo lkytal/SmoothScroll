@@ -1,5 +1,6 @@
 using Microsoft.VisualStudio.Text.Editor;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Windows;
@@ -10,9 +11,9 @@ namespace SmoothScroll
 	internal class ScrollController
 	{
 		private const int Interval = 16;
-		private const int Duration = 560;
+		private const int Duration = 560; //35 rounds
 		private const int AccelerateThreshold = 2;
-		private const double Accelerator = 1.4;
+		private const double Accelerator = 2.0;
 		private readonly double dpiRatio;
 
 		private readonly object Locker = new object();
@@ -29,7 +30,7 @@ namespace SmoothScroll
 			pageScroller = _pageScroller;
 			direction = _direction;
 
-			dpiRatio = SystemParameters.PrimaryScreenHeight / 1080.0;
+			dpiRatio = SystemParameters.PrimaryScreenHeight / 720.0;
 		}
 
 		private int CalulateTotalRounds(double timeRatio, double requestDistance)
@@ -41,8 +42,10 @@ namespace SmoothScroll
 			return (int)(maxTotalSteps * Math.Min(stepsRatio, 1));
 		}
 
-		public void ScrollView(double distance, double intervalRatio)
+		public void ScrollView(double distance, ScrollingSpeeds speedLever)
 		{
+			double intervalRatio = GetSpeedRatio(speedLever);
+
 			lock (Locker)
 			{
 				if (Math.Sign(distance) != Math.Sign(remain))
@@ -65,6 +68,18 @@ namespace SmoothScroll
 				workingThread = new Thread(ScrollingThread);
 				workingThread.Start();
 			}
+		}
+
+		private double GetSpeedRatio(ScrollingSpeeds speedLever)
+		{
+			var speedTable = new Dictionary<ScrollingSpeeds, double>()
+			{
+				{ScrollingSpeeds.Slow, 1.6},
+				{ScrollingSpeeds.Normal, 1.0},
+				{ScrollingSpeeds.Fast, 0.6}
+			};
+
+			return speedTable[speedLever];
 		}
 
 		private int CalculateScrollDistance()

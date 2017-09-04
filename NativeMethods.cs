@@ -26,12 +26,8 @@ namespace SmoothScroll
 			Touch
 		}
 
-		/// <summary>
-		/// Gets the extra information for the mouse event.
-		/// </summary>
-		/// <returns>The extra information provided by Windows API</returns>
-		[DllImport("user32.dll")]
-		private static extern ulong GetMessageExtraInfo();
+		[DllImport("user32.dll", SetLastError = false)]
+		public static extern IntPtr GetMessageExtraInfo();
 
 		/// <summary>
 		/// Determines what input device triggered the mouse event.
@@ -42,8 +38,8 @@ namespace SmoothScroll
 		/// </returns>
 		public static MouseEventSource GetMouseEventSource()
 		{
-			var extra = GetMessageExtraInfo();
-			bool isTouchOrPen = ((extra & 0xFFFFFF00) == 0xFF515700);
+			var extra = (uint) GetMessageExtraInfo();
+			bool isTouchOrPen = (extra & 0xFFFFFF00) == 0xFF515700;
 
 			if (!isTouchOrPen)
 			{

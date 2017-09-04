@@ -17,6 +17,7 @@ Preview:
 
 ## Update Log
 
+* 2.8.0: Adjust parameters; Support different speed lever.
 * 2.7.0: Performance enhancement.
 * 2.6.0: Stop scroll on mouse click; no longer require reopen editor after setting changed.
 * 2.5.3: Fix horizental scroll directing.

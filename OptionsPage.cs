@@ -9,32 +9,39 @@ namespace SmoothScroll
 	{
 		[Category("General")]
 		[Description("Enable This Extension or not.")]
-		[DisplayName("Enable Extension")]
+		[DisplayName("Enable This Extension")]
 		public bool ExtEnable { get; set; } = true;
 
 		[Category("General")]
-		[Description("Ratio of scrolling distance, indicates how long to scroll.")]
-		[DisplayName("Distance Ratio")]
-		public double SpeedRatio { get; set; } = 1.2;
-
-		[Category("General")]
-		[Description("Indicates scrolling animation duration.")]
-		[DisplayName("Animation duration Ratio")]
-		public double DurationRatio { get; set; } = 1.0;
-
-		[Category("Features")]
-		[Description("Enable Smooth Scroll or not.")]
+		[Description("Enable Smooth Scroll features or not.")]
 		[DisplayName("Enable Smooth Scroll")]
 		public bool SmoothEnable { get; set; } = true;
 
-		[Category("Features")]
-		[Description("Hold shift key to scroll horizontally.")]
+		[Category("General")]
+		[Description("Hold shift key to scroll text view horizontally.")]
 		[DisplayName("Enable Shift Scroll")]
 		public bool ShiftEnable { get; set; } = true;
 
-		[Category("Features")]
+		[Category("General")]
 		[Description("Hold Alt key to scroll text view by one page up/down.")]
 		[DisplayName("Enable Alt Scroll")]
 		public bool AltEnable { get; set; } = true;
+
+		[Category("Parameter")]
+		[Description("Indicates scrolling animation speed.")]
+		[DisplayName("Animation speed")]
+		public ScrollingSpeeds DurationRatio { get; set; } = ScrollingSpeeds.Normal;
+
+		[Category("Parameter")]
+		[Description("Ratio of scrolling distance, indicates how long to scroll per tick.")]
+		[DisplayName("Scrolling distance Ratio")]
+		public double SpeedRatio { get; set; } = 1.0;
+	}
+
+	public enum ScrollingSpeeds
+	{
+		Slow = 1,
+		Normal = 2,
+		Fast = 3
 	}
 }

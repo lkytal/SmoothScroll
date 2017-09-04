@@ -34,6 +34,7 @@ _ReSharper*/
 [Tt]est[Rr]esult*
 *.vssscc
 $tf*/
+/.vs
 /bk
 /common/zlib
 [Rr]elease/Dll
