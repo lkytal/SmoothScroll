@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TestWpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="600" Loaded="Window_Loaded">
+        Title="MainWindow" Height="600" Width="1200" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen">
     <Grid>
-        <TextBox x:Name="textBox" Margin="0" TextWrapping="Wrap" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" MouseWheel="textBox_MouseWheel" FontFamily="Consolas" FontSize="14"/>
+        <TextBox x:Name="textBox" Margin="0" TextWrapping="Wrap" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" FontFamily="Consolas" FontSize="14" PreviewMouseWheel="textBox_PreviewMouseWheel"/>
 
     </Grid>
 </Window>

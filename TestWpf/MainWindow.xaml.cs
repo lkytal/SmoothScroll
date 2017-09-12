@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,21 +31,37 @@ namespace TestWpf
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
-			textBox.Text = "";
-
 			scrollController = new ScrollController(this, ScrollingDirection.Vertical);
-		}
 
-		private void textBox_MouseWheel(object sender, MouseWheelEventArgs e)
-		{
-			e.Handled = true;
-
-			scrollController.ScrollView(e.Delta, ScrollingSpeeds.Normal);
+			var fs = new FileStream(@"..\..\..\scrollController\ScrollController.cs", FileMode.Open, FileAccess.Read, FileShare.None);
+			var reader = new StreamReader(fs);
+			textBox.Text = reader.ReadToEnd();
 		}
 
 		public void Scroll(ScrollingDirection direction, double value)
 		{
-			textBox.ScrollToVerticalOffset(value);
+			Action act = () =>
+			{
+				if (direction == ScrollingDirection.Vertical)
+				{
+					textBox.UpdateLayout();
+					textBox.ScrollToVerticalOffset(textBox.VerticalOffset - value);
+				}
+				else if (direction == ScrollingDirection.Horizental)
+				{
+					textBox.ScrollToHorizontalOffset(textBox.HorizontalOffset - value);
+				}
+			};
+
+			this.Dispatcher.BeginInvoke(act);
+		}
+
+		private void textBox_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+		{
+			e.Handled = true;
+
+			scrollController.ScrollView(e.Delta, ScrollingSpeeds.Normal);
+
 		}
 	}
 }
