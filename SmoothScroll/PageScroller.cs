@@ -1,10 +1,11 @@
 using System;
 using System.Windows.Threading;
 using Microsoft.VisualStudio.Text.Editor;
+using ScrollShared;
 
 namespace SmoothScroll
 {
-	internal class PageScroller
+	internal class PageScroller : IPageScroller
 	{
 		private readonly Dispatcher DispatcherAgent;
 		private readonly IWpfTextView WpfTextView;

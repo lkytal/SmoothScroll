@@ -1,14 +1,13 @@
-using Microsoft.VisualStudio.Text.Editor;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Windows;
 
-namespace SmoothScroll
+namespace ScrollShared
 {
 	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable")]
-	internal class ScrollController
+	public class ScrollController
 	{
 		private const int Interval = 16;
 		private const int AccelerateThreshold = 2;
@@ -16,7 +15,7 @@ namespace SmoothScroll
 		private readonly double dpiRatio;
 
 		private readonly object Locker = new object();
-		private readonly PageScroller pageScroller;
+		private readonly IPageScroller pageScroller;
 		private readonly ScrollingDirection direction;
 
 		private double totalDistance, remain;
@@ -24,7 +23,7 @@ namespace SmoothScroll
 
 		private Thread workingThread;
 
-		public ScrollController(PageScroller _pageScroller, ScrollingDirection _direction)
+		public ScrollController(IPageScroller _pageScroller, ScrollingDirection _direction)
 		{
 			pageScroller = _pageScroller;
 			direction = _direction;
@@ -135,11 +134,5 @@ namespace SmoothScroll
 
 			CleanupScroll();
 		}
-	}
-
-	internal enum ScrollingDirection
-	{
-		Vertical = 1,
-		Horizental = 2
 	}
 }

@@ -55,7 +55,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SmoothScroll.csproj">
+    <ProjectReference Include="..\SmoothScroll\SmoothScroll.csproj">
       <Project>{f091221e-fd10-41a7-aac4-c935deadbeef}</Project>
       <Name>SmoothScroll</Name>
     </ProjectReference>

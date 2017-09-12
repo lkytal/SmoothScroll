@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>ca7086d5-2713-4322-b2f5-c5f69bb1d4b4</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>scrollController</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)IPageScroller.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NativeMethods.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ScrollController.cs" />
+  </ItemGroup>
+</Project>

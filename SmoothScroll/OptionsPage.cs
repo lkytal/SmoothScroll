@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Shell;
+using ScrollShared;
 
 namespace SmoothScroll
 {
@@ -36,12 +37,5 @@ namespace SmoothScroll
 		[Description("Ratio of scrolling distance, indicates how long to scroll per tick.")]
 		[DisplayName("Scrolling distance Ratio")]
 		public double SpeedRatio { get; set; } = 1.0;
-	}
-
-	public enum ScrollingSpeeds
-	{
-		Slow = 1,
-		Normal = 2,
-		Fast = 3
 	}
 }

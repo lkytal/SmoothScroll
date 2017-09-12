@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.Text.Editor;
 using System.Windows.Input;
 using System.Windows.Threading;
+using ScrollShared;
 
 namespace SmoothScroll
 {
