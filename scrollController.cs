@@ -11,7 +11,6 @@ namespace SmoothScroll
 	internal class ScrollController
 	{
 		private const int Interval = 16;
-		private const int Duration = 560; //35 rounds
 		private const int AccelerateThreshold = 2;
 		private const double Accelerator = 2.0;
 		private readonly double dpiRatio;
@@ -35,11 +34,10 @@ namespace SmoothScroll
 
 		private int CalulateTotalRounds(double timeRatio, double requestDistance)
 		{
-			int maxTotalSteps = (int)(Duration * timeRatio / Interval);
+			double distanceRatio = Math.Sqrt(Math.Abs(requestDistance / dpiRatio) / 720);
+			double maxTotalSteps = 5 + 30 * distanceRatio;
 
-			double stepsRatio = Math.Sqrt(Math.Abs(requestDistance / dpiRatio) / 720);
-
-			return (int)(maxTotalSteps * Math.Min(stepsRatio, 1));
+			return (int)(maxTotalSteps * timeRatio);
 		}
 
 		public void ScrollView(double distance, ScrollingSpeeds speedLever)
