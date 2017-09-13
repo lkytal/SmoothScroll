@@ -14,7 +14,7 @@ namespace SmoothScroll
 		private bool ShiftEnable => SmoothScrollPackage.OptionsPage?.ShiftEnable ?? true;
 		private bool AltEnable => SmoothScrollPackage.OptionsPage?.AltEnable ?? true;
 		private bool SmoothEnable => SmoothScrollPackage.OptionsPage?.SmoothEnable ?? true;
-		private double SpeedRatio => SmoothScrollPackage.OptionsPage?.SpeedRatio ?? 1.1;
+		private double DistanceRatio => SmoothScrollPackage.OptionsPage?.DistanceRatio ?? 1.1;
 		private ScrollingSpeeds SpeedLever => SmoothScrollPackage.OptionsPage?.DurationRatio ?? ScrollingSpeeds.Normal;
 
 		private readonly ScrollController VerticalController, HorizontalController;
@@ -73,11 +73,11 @@ namespace SmoothScroll
 		{
 			if (direction == ScrollingDirection.Vertical)
 			{
-				VerticalController.ScrollView(distance * SpeedRatio, SpeedLever);
+				VerticalController.ScrollView(distance * DistanceRatio, SpeedLever);
 			}
 			else
 			{
-				HorizontalController.ScrollView(distance * SpeedRatio, SpeedLever);
+				HorizontalController.ScrollView(distance * DistanceRatio, SpeedLever);
 			}
 		}
 	}

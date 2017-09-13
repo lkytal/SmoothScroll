@@ -34,7 +34,7 @@ namespace ScrollShared
 		private int CalulateTotalRounds(double timeRatio, double requestDistance)
 		{
 			double distanceRatio = Math.Sqrt(Math.Abs(requestDistance / dpiRatio) / 720);
-			double maxTotalSteps = 5 + 30 * distanceRatio;
+			double maxTotalSteps = 2 + 35 * Math.Min(distanceRatio, 1.5);
 
 			return (int)(maxTotalSteps * timeRatio);
 		}

@@ -13,10 +13,11 @@ https://marketplace.visualstudio.com/items?itemName=lkytal.SmoothScroll) via Vis
 Let me know if you have questions or suggestions.
 
 Preview:
-![ScreenShot](Resources/smooth.gif)
+![ScreenShot](SmoothScroll/Resources/smooth.gif)
 
 ## Update Log
 
+* 2.8.1: Adjust duration.
 * 2.8.0: Adjust parameters; Support different speed lever.
 * 2.7.0: Performance enhancement.
 * 2.6.0: Stop scroll on mouse click; no longer require reopen editor after setting changed.

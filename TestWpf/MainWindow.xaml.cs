@@ -35,7 +35,12 @@ namespace TestWpf
 
 			var fs = new FileStream(@"..\..\..\scrollController\ScrollController.cs", FileMode.Open, FileAccess.Read, FileShare.None);
 			var reader = new StreamReader(fs);
-			textBox.Text = reader.ReadToEnd();
+			var text = reader.ReadToEnd();
+			reader.Close();
+			fs.Close();
+
+			textBox.Text = text + text + text;
+			textBox.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
 		}
 
 		public void Scroll(ScrollingDirection direction, double value)
@@ -44,7 +49,6 @@ namespace TestWpf
 			{
 				if (direction == ScrollingDirection.Vertical)
 				{
-					textBox.UpdateLayout();
 					textBox.ScrollToVerticalOffset(textBox.VerticalOffset - value);
 				}
 				else if (direction == ScrollingDirection.Horizental)
@@ -61,7 +65,6 @@ namespace TestWpf
 			e.Handled = true;
 
 			scrollController.ScrollView(e.Delta, ScrollingSpeeds.Normal);
-
 		}
 	}
 }

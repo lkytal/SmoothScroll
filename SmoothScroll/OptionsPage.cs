@@ -36,6 +36,6 @@ namespace SmoothScroll
 		[Category("Parameter")]
 		[Description("Ratio of scrolling distance, indicates how long to scroll per tick.")]
 		[DisplayName("Scrolling distance Ratio")]
-		public double SpeedRatio { get; set; } = 1.0;
+		public double DistanceRatio { get; set; } = 1.0;
 	}
 }
