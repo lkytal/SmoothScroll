@@ -32,6 +32,7 @@ namespace TestWpf
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
 			scrollController = new ScrollController(this, ScrollingDirection.Vertical);
+			textBox.PreviewMouseWheel += textBox_PreviewMouseWheel;
 
 			var fs = new FileStream(@"..\..\..\scrollController\ScrollController.cs", FileMode.Open, FileAccess.Read, FileShare.None);
 			var reader = new StreamReader(fs);
@@ -64,7 +65,18 @@ namespace TestWpf
 		{
 			e.Handled = true;
 
-			scrollController.ScrollView(e.Delta, ScrollingSpeeds.Normal);
+			ScrollingSpeeds scrollingSpeeds = ScrollingSpeeds.Normal;
+
+			if (radioSlow.IsChecked ?? false)
+			{
+				scrollingSpeeds = ScrollingSpeeds.Slow;
+			}
+			else if (radioFast.IsChecked ?? false)
+			{
+				scrollingSpeeds = ScrollingSpeeds.Fast;
+			}
+
+			scrollController.ScrollView(e.Delta, scrollingSpeeds);
 		}
 	}
 }

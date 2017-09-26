@@ -71,9 +71,9 @@ namespace ScrollShared
 		{
 			var speedTable = new Dictionary<ScrollingSpeeds, double>()
 			{
-				{ScrollingSpeeds.Slow, 1.6},
+				{ScrollingSpeeds.Slow, 1.5},
 				{ScrollingSpeeds.Normal, 1.0},
-				{ScrollingSpeeds.Fast, 0.6}
+				{ScrollingSpeeds.Fast, 0.65}
 			};
 
 			return speedTable[speedLever];
