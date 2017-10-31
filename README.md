@@ -21,9 +21,9 @@ Preview:
 * 2.8.0: Adjust parameters; Support different speed lever.
 * 2.7.0: Performance enhancement.
 * 2.6.0: Stop scroll on mouse click; no longer require reopen editor after setting changed.
-* 2.5.3: Fix horizental scroll directing.
-* 2.5.2: Slient speed up when begining.
-* 2.5.0: Support for visual Studio 2017.
+* 2.5.3: Fix horizontal scroll directing.
+* 2.5.2: Silent speed up when beginning.
+* 2.5.0: Support for Visual Studio 2017.
 * 2.4.0: Adaptive scroll duration.
 * 2.3.2: Fixup improper dispose.
 * 2.3.1: Better algorithm.
@@ -37,9 +37,9 @@ Preview:
 * 1.2.0: Scrolling algorithm improved.
 * 1.1.0: Scrolling interval changed.
 
-## My other extentions :
+## My other extensions :
 
-- ### [BuildinCmd](https://marketplace.visualstudio.com/items?itemName=lkytal.BuiltinCmd)
+- ### [BuiltinCmd](https://marketplace.visualstudio.com/items?itemName=lkytal.BuiltinCmd)
 - ### [StatusInfo](https://marketplace.visualstudio.com/items?itemName=lkytal.StatusInfo)
 - ### [AutoZoom](https://marketplace.visualstudio.com/items?itemName=lkytal.AutoZoom)
   

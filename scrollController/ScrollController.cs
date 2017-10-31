@@ -14,7 +14,7 @@ namespace ScrollShared
 		private const double Accelerator = 2.0;
 		private readonly double dpiRatio;
 
-		private readonly object Locker = new object();
+		private readonly object locker = new object();
 		private readonly IPageScroller pageScroller;
 		private readonly ScrollingDirection direction;
 
@@ -43,7 +43,7 @@ namespace ScrollShared
 		{
 			double intervalRatio = GetSpeedRatio(speedLever);
 
-			lock (Locker)
+			lock (locker)
 			{
 				if (Math.Sign(distance) != Math.Sign(remain))
 				{
@@ -101,7 +101,7 @@ namespace ScrollShared
 
 		private void CleanupScroll()
 		{
-			lock (Locker)
+			lock (locker)
 			{
 				round = totalRounds;
 				totalDistance = remain = 0;
@@ -121,7 +121,7 @@ namespace ScrollShared
 					break;
 				}
 
-				lock (Locker)
+				lock (locker)
 				{
 					round += 1;
 					remain -= stepLength;

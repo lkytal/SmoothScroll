@@ -8,7 +8,7 @@ namespace SmoothScroll
 {
 	internal sealed class SmoothScrollMouseProcessor : MouseProcessorBase
 	{
-		private readonly IWpfTextView WpfTextView;
+		private readonly IWpfTextView wpfTextView;
 
 		private bool ExtEnable => SmoothScrollPackage.OptionsPage?.ExtEnable ?? true;
 		private bool ShiftEnable => SmoothScrollPackage.OptionsPage?.ShiftEnable ?? true;
@@ -17,14 +17,14 @@ namespace SmoothScroll
 		private double DistanceRatio => SmoothScrollPackage.OptionsPage?.DistanceRatio ?? 1.1;
 		private ScrollingSpeeds SpeedLever => SmoothScrollPackage.OptionsPage?.DurationRatio ?? ScrollingSpeeds.Normal;
 
-		private readonly ScrollController VerticalController, HorizontalController;
+		private readonly ScrollController verticalController, horizontalController;
 
 		internal SmoothScrollMouseProcessor(IWpfTextView _wpfTextView)
 		{
-			this.WpfTextView = _wpfTextView;
-			var pageScroller = new PageScroller(Dispatcher.CurrentDispatcher, WpfTextView);
-			VerticalController = new ScrollController(pageScroller, ScrollingDirection.Vertical);
-			HorizontalController = new ScrollController(pageScroller, ScrollingDirection.Horizental);
+			this.wpfTextView = _wpfTextView;
+			var pageScroller = new PageScroller(Dispatcher.CurrentDispatcher, wpfTextView);
+			verticalController = new ScrollController(pageScroller, ScrollingDirection.Vertical);
+			horizontalController = new ScrollController(pageScroller, ScrollingDirection.Horizental);
 		}
 
 		public override void PreprocessMouseWheel(MouseWheelEventArgs e)
@@ -36,7 +36,7 @@ namespace SmoothScroll
 
 			if (AltEnable && (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)))
 			{
-				WpfTextView.ViewScroller.ScrollViewportVerticallyByPage(e.Delta < 0 ? ScrollDirection.Down : ScrollDirection.Up);
+				wpfTextView.ViewScroller.ScrollViewportVerticallyByPage(e.Delta < 0 ? ScrollDirection.Down : ScrollDirection.Up);
 
 				e.Handled = true;
 				return;
@@ -44,7 +44,7 @@ namespace SmoothScroll
 
 			if (ShiftEnable && (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift)))
 			{
-				postScrollRequest(-e.Delta, ScrollingDirection.Horizental);
+				PostScrollRequest(-e.Delta, ScrollingDirection.Horizental);
 
 				e.Handled = true;
 				return;
@@ -58,26 +58,26 @@ namespace SmoothScroll
 					return;
 				}
 
-				postScrollRequest(e.Delta, ScrollingDirection.Vertical);
+				PostScrollRequest(e.Delta, ScrollingDirection.Vertical);
 				e.Handled = true;
 			}
 		}
 
 		public override void PostprocessMouseDown(MouseButtonEventArgs e)
 		{
-			VerticalController.StopScroll();
-			HorizontalController.StopScroll();
+			verticalController.StopScroll();
+			horizontalController.StopScroll();
 		}
 
-		private void postScrollRequest(double distance, ScrollingDirection direction)
+		private void PostScrollRequest(double distance, ScrollingDirection direction)
 		{
 			if (direction == ScrollingDirection.Vertical)
 			{
-				VerticalController.ScrollView(distance * DistanceRatio, SpeedLever);
+				verticalController.ScrollView(distance * DistanceRatio, SpeedLever);
 			}
 			else
 			{
-				HorizontalController.ScrollView(distance * DistanceRatio, SpeedLever);
+				horizontalController.ScrollView(distance * DistanceRatio, SpeedLever);
 			}
 		}
 	}
