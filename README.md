@@ -1,9 +1,10 @@
 # SmoothScroll
 
+[![AppVeyor](https://img.shields.io/appveyor/ci/lkytal/smoothscroll.svg?style=flat-square)](https://ci.appveyor.com/project/lkytal/smoothscroll)
+
 Smooth Scrolling for the Visual Studio 2013, 2015 and 2017.
 
-Install [Smooth Scrolling](
-https://marketplace.visualstudio.com/items?itemName=lkytal.SmoothScroll) via Visual Studio market.
+Install [Smooth Scrolling](https://marketplace.visualstudio.com/items?itemName=lkytal.SmoothScroll) via Visual Studio market.
 
 ## Additional features
 
@@ -17,10 +18,11 @@ Preview:
 
 ## Update Log
 
+* 2.8.1: Adjust initial duration.
 * 2.8.1: Adjust duration.
 * 2.8.0: Adjust parameters; Support different speed lever.
 * 2.7.0: Performance enhancement.
-* 2.6.0: Stop scroll on mouse click; no longer require reopen editor after setting changed.
+* 2.6.0: Stop scroll when mouse click; no longer require reopening editor after setting changed.
 * 2.5.3: Fix horizontal scroll directing.
 * 2.5.2: Silent speed up when beginning.
 * 2.5.0: Support for Visual Studio 2017.
@@ -32,7 +34,7 @@ Preview:
 * 2.1.0: More flexible settings.
 * 2.0.5: Fixup for VS2013.
 * 2.0.4: First stage fixup for VS2013.
-* 1.0.0: Option page and additional features.
+* 2.0.0: Option page and additional features.
 * 1.3.0: Experiment support for Visual Studio 15.
 * 1.2.0: Scrolling algorithm improved.
 * 1.1.0: Scrolling interval changed.
