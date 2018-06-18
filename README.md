@@ -18,7 +18,8 @@ Preview:
 
 ## Update Log
 
-* 2.8.1: Adjust initial duration.
+* 2.8.3: Fix smooth option.
+* 2.8.2: Adjust initial duration.
 * 2.8.1: Adjust duration.
 * 2.8.0: Adjust parameters; Support different speed lever.
 * 2.7.0: Performance enhancement.

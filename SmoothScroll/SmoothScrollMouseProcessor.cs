@@ -44,7 +44,14 @@ namespace SmoothScroll
 
 			if (ShiftEnable && (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift)))
 			{
-				PostScrollRequest(-e.Delta, ScrollingDirection.Horizental);
+				if (SmoothEnable)
+				{
+					PostScrollRequest(-e.Delta, ScrollingDirection.Horizental);
+				}
+				else
+				{
+					wpfTextView.ViewScroller.ScrollViewportHorizontallyByPixels(-e.Delta);
+				}
 
 				e.Handled = true;
 				return;
