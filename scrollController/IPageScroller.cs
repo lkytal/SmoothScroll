@@ -14,7 +14,8 @@ namespace ScrollShared
 
 	public enum ScrollingDirection
 	{
+		None,
 		Vertical = 1,
-		Horizental = 2
+		Horizontal = 2
 	}
 }

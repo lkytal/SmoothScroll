@@ -1,5 +1,6 @@
 using System;
-using System.Windows.Threading;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.Text.Editor;
 using ScrollShared;
 
@@ -7,30 +8,27 @@ namespace SmoothScroll
 {
 	internal class PageScroller : IPageScroller
 	{
-		private readonly Dispatcher DispatcherAgent;
-		private readonly IWpfTextView WpfTextView;
+		private readonly IWpfTextView wpfTextView;
 
-		public PageScroller(Dispatcher dispatcherAgent, IWpfTextView wpfTextView)
+		public PageScroller(IWpfTextView wpfTextView)
 		{
-			DispatcherAgent = dispatcherAgent;
-			WpfTextView = wpfTextView;
+			this.wpfTextView = wpfTextView;
 		}
 
 		public void Scroll(ScrollingDirection direction, double value)
 		{
-			Action act = () =>
-			{
+			ThreadHelper.JoinableTaskFactory.Run(async delegate {
+				await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
 				if (direction == ScrollingDirection.Vertical)
 				{
-					WpfTextView.ViewScroller.ScrollViewportVerticallyByPixels(value);
+					wpfTextView.ViewScroller.ScrollViewportVerticallyByPixels(value);
 				}
-				else if (direction == ScrollingDirection.Horizental)
+				else if (direction == ScrollingDirection.Horizontal)
 				{
-					WpfTextView.ViewScroller.ScrollViewportHorizontallyByPixels(value);
+					wpfTextView.ViewScroller.ScrollViewportHorizontallyByPixels(value);
 				}
-			};
-
-			DispatcherAgent.BeginInvoke(act);
+			});
 		}
 	}
 }

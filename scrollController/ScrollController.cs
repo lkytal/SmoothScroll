@@ -31,7 +31,7 @@ namespace ScrollShared
 			dpiRatio = SystemParameters.PrimaryScreenHeight / 720.0;
 		}
 
-		private int CalulateTotalRounds(double timeRatio, double requestDistance)
+		private int CalculateTotalRounds(double timeRatio, double requestDistance)
 		{
 			double distanceRatio = Math.Sqrt(Math.Abs(requestDistance / dpiRatio) / 720);
 			double maxTotalSteps = 10 + 25 * Math.Min(distanceRatio, 1.5);
@@ -58,7 +58,7 @@ namespace ScrollShared
 				totalDistance = remain;
 			}
 
-			totalRounds = CalulateTotalRounds(intervalRatio, totalDistance);
+			totalRounds = CalculateTotalRounds(intervalRatio, totalDistance);
 
 			if (workingThread == null)
 			{
@@ -86,8 +86,6 @@ namespace ScrollShared
 			var stepLength = 2 * totalDistance / totalRounds * (1 - percent);
 
 			int result = (int)Math.Round(stepLength);
-
-			//Debug.WriteLine($"{remain} ===> {result}");
 
 			return result;
 		}

@@ -52,7 +52,7 @@ namespace TestWpf
 				{
 					textBox.ScrollToVerticalOffset(textBox.VerticalOffset - value);
 				}
-				else if (direction == ScrollingDirection.Horizental)
+				else if (direction == ScrollingDirection.Horizontal)
 				{
 					textBox.ScrollToHorizontalOffset(textBox.HorizontalOffset - value);
 				}

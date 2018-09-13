@@ -22,9 +22,9 @@ namespace SmoothScroll
 		internal SmoothScrollMouseProcessor(IWpfTextView _wpfTextView)
 		{
 			this.wpfTextView = _wpfTextView;
-			var pageScroller = new PageScroller(Dispatcher.CurrentDispatcher, wpfTextView);
+			var pageScroller = new PageScroller(wpfTextView);
 			verticalController = new ScrollController(pageScroller, ScrollingDirection.Vertical);
-			horizontalController = new ScrollController(pageScroller, ScrollingDirection.Horizental);
+			horizontalController = new ScrollController(pageScroller, ScrollingDirection.Horizontal);
 		}
 
 		public override void PreprocessMouseWheel(MouseWheelEventArgs e)
@@ -46,7 +46,7 @@ namespace SmoothScroll
 			{
 				if (SmoothEnable)
 				{
-					PostScrollRequest(-e.Delta, ScrollingDirection.Horizental);
+					PostScrollRequest(-e.Delta, ScrollingDirection.Horizontal);
 				}
 				else
 				{
