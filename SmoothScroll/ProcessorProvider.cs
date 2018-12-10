@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Text;
+using System.Windows.Input;
 
 namespace SmoothScroll
 {
@@ -15,7 +16,7 @@ namespace SmoothScroll
 	{
 		IMouseProcessor IMouseProcessorProvider.GetAssociatedProcessor(IWpfTextView wpfTextView)
 		{
-			return new SmoothScrollMouseProcessor(wpfTextView);
+			return new SmoothScrollProcessor(wpfTextView);
 		}
 	}
 }

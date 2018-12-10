@@ -38,7 +38,7 @@ namespace ScrollShared
 		/// </returns>
 		public static MouseEventSource GetMouseEventSource()
 		{
-			var extra = (uint) GetMessageExtraInfo();
+			var extra = (uint)GetMessageExtraInfo();
 			bool isTouchOrPen = (extra & 0xFFFFFF00) == 0xFF515700;
 
 			if (!isTouchOrPen)
@@ -54,6 +54,15 @@ namespace ScrollShared
 		public static bool IsMouseEvent()
 		{
 			return GetMouseEventSource() == MouseEventSource.Mouse;
+		}
+
+		/// <summary>
+		/// Gets high bits values of the pointer.
+		/// </summary>
+		public static int HIWORD(IntPtr ptr)
+		{
+			var val32 = ptr.ToInt32();
+			return ((val32 >> 16) & 0xFFFF);
 		}
 	}
 }

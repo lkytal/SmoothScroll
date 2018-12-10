@@ -103,8 +103,8 @@
     </Compile>
     <Compile Include="PageScroller.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SmoothScrollMouseProcessor.cs" />
-    <Compile Include="SmoothScrollMouseProcessorProvider.cs" />
+    <Compile Include="SmoothScrollProcessor.cs" />
+    <Compile Include="ProcessorProvider.cs" />
     <Compile Include="SmoothScrollPackage.cs" />
   </ItemGroup>
   <ItemGroup>

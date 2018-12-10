@@ -1,8 +1,8 @@
-using System;
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.Text.Editor;
+using Microsoft.VisualStudio.Threading;
 using ScrollShared;
+using System;
 
 namespace SmoothScroll
 {
@@ -17,7 +17,8 @@ namespace SmoothScroll
 
 		public void Scroll(ScrollingDirection direction, double value)
 		{
-			ThreadHelper.JoinableTaskFactory.Run(async delegate {
+			ThreadHelper.JoinableTaskFactory.Run(async delegate
+			{
 				await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
 				if (direction == ScrollingDirection.Vertical)
