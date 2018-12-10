@@ -1,14 +1,19 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using Microsoft.VisualStudio.Text.Editor;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Threading;
 using ScrollShared;
 
 namespace SmoothScroll
 {
 	internal sealed class SmoothScrollMouseProcessor : MouseProcessorBase
-	{
-		private readonly IWpfTextView wpfTextView;
+    {
+        private const int WM_MOUSEHWHEEL = 0x020E;
+
+        private readonly IWpfTextView wpfTextView;
 
 		private bool ExtEnable => SmoothScrollPackage.OptionsPage?.ExtEnable ?? true;
 		private bool ShiftEnable => SmoothScrollPackage.OptionsPage?.ShiftEnable ?? true;
@@ -25,9 +30,15 @@ namespace SmoothScroll
 			var pageScroller = new PageScroller(wpfTextView);
 			verticalController = new ScrollController(pageScroller, ScrollingDirection.Vertical);
 			horizontalController = new ScrollController(pageScroller, ScrollingDirection.Horizontal);
-		}
 
-		public override void PreprocessMouseWheel(MouseWheelEventArgs e)
+            wpfTextView.VisualElement.Loaded += (_, __) =>
+            {
+                HwndSource source = PresentationSource.FromVisual(wpfTextView.VisualElement) as HwndSource;
+                source?.AddHook(MessageHook);
+            };
+        }
+
+        public override void PreprocessMouseWheel(MouseWheelEventArgs e)
 		{
 			if (!ExtEnable || Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
 			{
@@ -70,6 +81,19 @@ namespace SmoothScroll
 			}
 		}
 
+        public void ProcessMouseHWheel(int delta)
+        {
+            delta = Math.Sign(delta) * -20;
+            if (SmoothEnable)
+            {
+                PostScrollRequest(-delta, ScrollingDirection.Horizontal);
+            }
+            else
+            {
+                wpfTextView.ViewScroller.ScrollViewportHorizontallyByPixels(-delta);
+            }
+        }
+
 		public override void PostprocessMouseDown(MouseButtonEventArgs e)
 		{
 			verticalController.StopScroll();
@@ -86,6 +110,28 @@ namespace SmoothScroll
 			{
 				horizontalController.ScrollView(distance * DistanceRatio, SpeedLever);
 			}
-		}
-	}
+        }
+
+        private IntPtr MessageHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
+            switch (msg)
+            {
+                case WM_MOUSEHWHEEL:
+                    int delta = (short)HIWORD(wParam);
+                    ProcessMouseHWheel(delta);
+                    handled = true;
+                    return (IntPtr)1;
+            }
+            return IntPtr.Zero;
+        }
+
+        /// <summary>
+        /// Gets high bits values of the pointer.
+        /// </summary>
+        private static int HIWORD(IntPtr ptr)
+        {
+            var val32 = ptr.ToInt32();
+            return ((val32 >> 16) & 0xFFFF);
+        }
+    }
 }

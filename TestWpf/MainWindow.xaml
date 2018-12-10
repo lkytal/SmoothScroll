@@ -5,18 +5,22 @@
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:local="clr-namespace:TestWpf"
 		mc:Ignorable="d"
-		Title="MainWindow" Height="600" Width="1200" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen">
-	<Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="auto" />
-			<RowDefinition Height="*" />
-		</Grid.RowDefinitions>
-		
-		<StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="0">
-			<RadioButton x:Name="radioSlow" Padding="10" VerticalContentAlignment="Center" Content="Slow" HorizontalContentAlignment="Stretch"/>
-			<RadioButton x:Name="radioNormal" Padding="10" Content="Normal" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" IsChecked="True"></RadioButton>
-			<RadioButton x:Name="radioFast" Padding="10" Content="Fast" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"></RadioButton>
-		</StackPanel>
-		<TextBox x:Name="textBox" Grid.Row="1" TextWrapping="Wrap" HorizontalContentAlignment="Stretch" FontFamily="Consolas" FontSize="14"/>
-	</Grid>
+		Title="MainWindow" Height="600" Width="600" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="997*"/>
+            <ColumnDefinition Width="195*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="0" Grid.ColumnSpan="2">
+            <RadioButton x:Name="radioSlow" Padding="10" VerticalContentAlignment="Center" Content="Slow" HorizontalContentAlignment="Stretch"/>
+            <RadioButton x:Name="radioNormal" Padding="10" Content="Normal" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" IsChecked="True"></RadioButton>
+            <RadioButton x:Name="radioFast" Padding="10" Content="Fast" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"></RadioButton>
+        </StackPanel>
+        <TextBox x:Name="textBox" Grid.Row="1" TextWrapping="NoWrap" HorizontalContentAlignment="Stretch" FontFamily="Consolas" FontSize="14" HorizontalScrollBarVisibility="Visible" Grid.ColumnSpan="2"/>
+    </Grid>
 </Window>
