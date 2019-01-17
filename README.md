@@ -18,6 +18,7 @@ Preview:
 
 ## Update Log
 
+* 2.9.0: Tentatively support VS2019.
 * 2.8.4: Tentatively support horizontal mouse wheel.
 * 2.8.3: Fix smooth option.
 * 2.8.2: Adjust initial duration.
