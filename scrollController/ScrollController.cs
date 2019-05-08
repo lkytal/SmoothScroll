@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace ScrollShared
@@ -9,7 +10,7 @@ namespace ScrollShared
 	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable")]
 	public class ScrollController
 	{
-		private const int Interval = 16;
+		private const int Interval = 8;
 		private const int AccelerateThreshold = 2;
 		private const double Accelerator = 2.0;
 		private readonly double dpiRatio;
@@ -21,7 +22,7 @@ namespace ScrollShared
 		private double totalDistance, remain;
 		private int totalRounds, round;
 
-		private Thread workingThread;
+		private Task workingThread;
 
 		public ScrollController(IPageScroller _pageScroller, ScrollingDirection _direction)
 		{
@@ -62,8 +63,7 @@ namespace ScrollShared
 
 			if (workingThread == null)
 			{
-				workingThread = new Thread(ScrollingThread);
-				workingThread.Start();
+				workingThread = Task.Run(() => ScrollingThread());
 			}
 		}
 
@@ -92,7 +92,7 @@ namespace ScrollShared
 
 		public void StopScroll()
 		{
-			workingThread?.Abort();
+			workingThread?.Wait(100);
 
 			CleanupScroll();
 		}
@@ -108,7 +108,7 @@ namespace ScrollShared
 			}
 		}
 
-		private void ScrollingThread(object obj)
+		private async Task ScrollingThread()
 		{
 			while (round <= totalRounds)
 			{
@@ -127,7 +127,7 @@ namespace ScrollShared
 
 				pageScroller.Scroll(direction, stepLength);
 
-				Thread.Sleep(Interval);
+				await Task.Delay(Interval);
 			}
 
 			CleanupScroll();
