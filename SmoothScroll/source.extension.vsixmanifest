@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="C3E3372B-022D-4E19-BD83-EEDD6FA01E5C" Version="2.9.0" Language="en-US" Publisher="Lkytal" />
+        <Identity Id="C3E3372B-022D-4E19-BD83-EEDD6FA01E5C" Version="3.0.1" Language="en-US" Publisher="Lkytal" />
         <DisplayName>Smooth Scroll</DisplayName>
         <Description xml:space="preserve">Smooth Scroll for VS2013, VS2015, VS2017 and VS2019</Description>
         <MoreInfo>https://github.com/lkytal/SmoothScroll</MoreInfo>

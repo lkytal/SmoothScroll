@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -11,7 +10,6 @@ namespace SmoothScroll
 	[ProvideAutoLoad(UIContextGuids80.NoSolution)]
 	[ProvideOptionPage(typeof(OptionsPage), "SmoothScroll", "General", 0, 0, true)]
 
-	[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
 	public sealed class SmoothScrollPackage : Package
 	{
 		public const string PackageGuidString = "6bb22343-df63-4f19-8088-66caeafde0ad";
