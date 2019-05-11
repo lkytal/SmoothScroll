@@ -22,7 +22,7 @@ namespace ScrollShared
 		private double totalDistance, remain;
 		private int totalRounds, round;
 
-		private Task workingThread;
+		private Task workingThread = null;
 
 		public ScrollController(IPageScroller _pageScroller, ScrollingDirection _direction)
 		{
@@ -93,7 +93,6 @@ namespace ScrollShared
 		public void StopScroll()
 		{
 			workingThread?.Wait(100);
-
 			CleanupScroll();
 		}
 
