@@ -10,7 +10,7 @@ namespace ScrollShared
 	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable")]
 	public class ScrollController
 	{
-		private const int Interval = 8;
+		private const int Interval = 16;
 		private const int AccelerateThreshold = 2;
 		private const double Accelerator = 2.0;
 		private readonly double dpiRatio;
@@ -63,7 +63,7 @@ namespace ScrollShared
 
 			if (workingThread == null)
 			{
-				workingThread = Task.Run(() => ScrollingThread());
+				workingThread = Task.Run(ScrollingThread);
 			}
 		}
 
