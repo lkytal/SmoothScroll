@@ -6,6 +6,10 @@ Smooth Scrolling for the Visual Studio 2013, 2015 and 2017.
 
 Install [Smooth Scrolling](https://marketplace.visualstudio.com/items?itemName=lkytal.SmoothScroll) via Visual Studio market.
 
+## VS2013 and VS2015 version
+
+Install [the special version](SmoothScroll/SmoothScroll_VS2013.vsix).
+
 ## Additional features
 
 * Hold shift key to Scroll horizontally.
