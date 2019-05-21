@@ -18,6 +18,11 @@ Preview:
 
 ## Update Log
 
+* 3.1.4: Fixed Option Page
+* 3.1.1: Fixed MPF dependency
+* 3.1.0: Fixed load error for VS2017
+* 3.0.1: Last version for VS2013 and VS2015
+* 3.0.0: Use async package for VS2019
 * 2.9.0: Tentatively support VS2019.
 * 2.8.4: Tentatively support horizontal mouse wheel.
 * 2.8.3: Fix smooth option.

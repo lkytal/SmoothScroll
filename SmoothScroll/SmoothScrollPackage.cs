@@ -20,12 +20,13 @@ namespace SmoothScroll
 	{
 		public const string PackageGuidString = "6bb22343-df63-4f19-8088-66caeafde0ad";
 
-		public static OptionsPage OptionsPage;
+		public static OptionsPage OptionsPage { get; set; }
 
 		protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
 		{
 			await base.InitializeAsync(cancellationToken, progress);
 
+			await JoinableTaskFactory.SwitchToMainThreadAsync();
 			OptionsPage = base.GetDialogPage(typeof(OptionsPage)) as OptionsPage;
 		}
 	}
