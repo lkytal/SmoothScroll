@@ -2,134 +2,164 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace ScrollShared
 {
-	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable")]
-	public class ScrollController
-	{
-		private const int Interval = 16;
-		private const int AccelerateThreshold = 2;
-		private const double Accelerator = 2.0;
-		private readonly double dpiRatio;
+  [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable")]
+  public class ScrollController
+  {
+    private const long      Interval            = 33;
+    private const long      MinInterval         = 5;
+    private const int       AccelerateThreshold = 2;
+    private const double    Accelerator         = 2.0;
+    private readonly double dpiRatio;
 
-		private readonly object locker = new object();
-		private readonly IPageScroller pageScroller;
-		private readonly ScrollingDirection direction;
+    private readonly object locker = new object();
+    private readonly IPageScroller pageScroller;
+    private readonly ScrollingDirection direction;
 
-		private double totalDistance, remain;
-		private int totalRounds, round;
+    private readonly Dictionary<ScrollingSpeeds, double> speedTable = new Dictionary<ScrollingSpeeds, double>()
+    {
+      {ScrollingSpeeds.Slow, 1.5},
+      {ScrollingSpeeds.Normal, 1.0},
+      {ScrollingSpeeds.Fast, 0.65}
+    };
 
-		private Task workingThread = null;
+    private double totalDistance;
+    private double remain;
+    private int    totalRounds;
+    private int    round;
 
-		public ScrollController(IPageScroller _pageScroller, ScrollingDirection _direction)
-		{
-			pageScroller = _pageScroller;
-			direction = _direction;
+    private AutoResetEvent   stopScrollEvent       = new AutoResetEvent(false);
+    private AutoResetEvent   startScrollEvent      = new AutoResetEvent(false);
+    private ManualResetEvent exitScrollThreadEvent = new ManualResetEvent(false);
 
-			dpiRatio = SystemParameters.PrimaryScreenHeight / 720.0;
-		}
+    private Thread workingThread;
 
-		private int CalculateTotalRounds(double timeRatio, double requestDistance)
-		{
-			double distanceRatio = Math.Sqrt(Math.Abs(requestDistance / dpiRatio) / 720);
-			double maxTotalSteps = 10 + 25 * Math.Min(distanceRatio, 1.5);
+    public ScrollController(IPageScroller _pageScroller, ScrollingDirection _direction)
+    {
+      pageScroller  = _pageScroller;
+      direction     = _direction;
+      dpiRatio      = SystemParameters.PrimaryScreenHeight / 720.0;
+      workingThread = new Thread(new ThreadStart(ScrollingThread));
+      workingThread.Start();
+    }
 
-			return (int)(maxTotalSteps * timeRatio);
-		}
+    ~ScrollController()
+    {
+      exitScrollThreadEvent.Set();
+      workingThread.Join();
+    }
 
-		public void ScrollView(double distance, ScrollingSpeeds speedLever)
-		{
-			double intervalRatio = GetSpeedRatio(speedLever);
+    private int CalculateTotalRounds(double timeRatio, double requestDistance)
+    {
+      double distanceRatio = Math.Sqrt(Math.Abs(requestDistance / dpiRatio) / 720);
+      double maxTotalSteps = 10 + 25 * Math.Min(distanceRatio, 1.5);
 
-			lock (locker)
-			{
-				if (Math.Sign(distance) != Math.Sign(remain))
-				{
-					remain = (int)distance;
-				}
-				else
-				{
-					remain += (int)(distance * (round < AccelerateThreshold ? 1 : Accelerator));
-				}
+      return (int)(maxTotalSteps * timeRatio);
+    }
 
-				round = 0;
-				totalDistance = remain;
-			}
+    public void ScrollView(double distance, ScrollingSpeeds speedLever)
+    {
+      double intervalRatio = GetSpeedRatio(speedLever);
 
-			totalRounds = CalculateTotalRounds(intervalRatio, totalDistance);
+      lock (locker)
+      {
+        if (Math.Sign(distance) != Math.Sign(remain))
+        {
+          remain = (int)distance;
+        }
+        else
+        {
+          remain += (int)(distance * (round < AccelerateThreshold ? 1 : Accelerator));
+        }
 
-			if (workingThread == null)
-			{
-				workingThread = Task.Run(ScrollingThread);
-			}
-		}
+        round = 0;
+        totalDistance = remain;
+      }
 
-		private double GetSpeedRatio(ScrollingSpeeds speedLever)
-		{
-			var speedTable = new Dictionary<ScrollingSpeeds, double>()
-			{
-				{ScrollingSpeeds.Slow, 1.5},
-				{ScrollingSpeeds.Normal, 1.0},
-				{ScrollingSpeeds.Fast, 0.65}
-			};
+      totalRounds = CalculateTotalRounds(intervalRatio, totalDistance);
 
-			return speedTable[speedLever];
-		}
+      startScrollEvent.Set();
+    }
 
-		private int CalculateScrollDistance()
-		{
-			double percent = (double)round / totalRounds;
+    private double GetSpeedRatio(ScrollingSpeeds speedLever)
+    {
+      return speedTable[speedLever];
+    }
 
-			var stepLength = 2 * totalDistance / totalRounds * (1 - percent);
+    private int CalculateScrollDistance()
+    {
+      var percent    = (double)round / totalRounds;
+      var stepLength = 2 * totalDistance / totalRounds * (1 - percent);
+      return (int)Math.Round(stepLength);
+    }
 
-			int result = (int)Math.Round(stepLength);
+    public void StopScroll()
+    {
+      stopScrollEvent.Set();
+    }
 
-			return result;
-		}
+    private void CleanupScroll()
+    {
+      lock (locker)
+      {
+        round = totalRounds;
+        totalDistance = remain = 0;
+      }
+    }
 
-		public void StopScroll()
-		{
-			workingThread?.Wait(100);
-			CleanupScroll();
-		}
+    private void ScrollingThread()
+    {
+      var  sleepWaitHandles    = new WaitHandle[] { startScrollEvent, exitScrollThreadEvent };
+      var  exitLoopWaitHandles = new WaitHandle[] { stopScrollEvent, exitScrollThreadEvent };
+      var  stopWatch           = new Stopwatch();
+      long remainingDelay;
 
-		private void CleanupScroll()
-		{
-			lock (locker)
-			{
-				round = totalRounds;
-				totalDistance = remain = 0;
+      // The first loop, sleep/run loop.
+      for (;;)
+      {
+        WaitHandle.WaitAny(sleepWaitHandles);
+        if (exitScrollThreadEvent.WaitOne(0))
+        {
+          return;
+        }
 
-				workingThread = null;
-			}
-		}
+        // The second loop, scrolling loop.
+        while (round <= totalRounds && WaitHandle.WaitAny(exitLoopWaitHandles, 0) == WaitHandle.WaitTimeout)
+        {
+          if (exitScrollThreadEvent.WaitOne(0))
+          {
+            return;
+          }
 
-		private async Task ScrollingThread()
-		{
-			while (round <= totalRounds)
-			{
-				var stepLength = CalculateScrollDistance();
+          var stepLength = CalculateScrollDistance();
 
-				if (stepLength == 0)
-				{
-					break;
-				}
+          if (stepLength == 0)
+          {
+            break;
+          }
 
-				lock (locker)
-				{
-					round += 1;
-					remain -= stepLength;
-				}
+          lock (locker)
+          {
+            ++round;
+            remain -= stepLength;
+          }
 
-				pageScroller.Scroll(direction, stepLength);
+          stopWatch.Restart();
 
-				await Task.Delay(Interval);
-			}
+          pageScroller.Scroll(direction, stepLength);
 
-			CleanupScroll();
-		}
-	}
+          stopWatch.Stop();
+          remainingDelay = Math.Max(Interval - stopWatch.ElapsedMilliseconds, MinInterval);
+
+          // Delay.
+          WaitHandle.WaitAny(exitLoopWaitHandles, (int)remainingDelay);
+        }
+
+        CleanupScroll();
+      }
+    }
+  }
 }
