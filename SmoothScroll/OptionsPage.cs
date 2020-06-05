@@ -30,12 +30,17 @@ namespace SmoothScroll
 
 		[Category("Parameter")]
 		[Description("Indicates scrolling animation speed.")]
-		[DisplayName("Animation speed")]
+		[DisplayName("Animation speed / duration")]
 		public ScrollingSpeeds DurationRatio { get; set; } = ScrollingSpeeds.Normal;
 
 		[Category("Parameter")]
 		[Description("Ratio of scrolling distance, indicates how long to scroll per tick.")]
 		[DisplayName("Scrolling distance Ratio")]
 		public double DistanceRatio { get; set; } = 1.0;
+
+		[Category("Parameter")]
+		[Description("FPS of scrolling animation, smoother with higher FPS but will also cost more CPUs.")]
+		[DisplayName("Scrolling FPS")]
+		public ScrollingFPS FPS { get; set; } = ScrollingFPS.Normal;
 	}
 }

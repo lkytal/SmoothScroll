@@ -18,4 +18,12 @@ namespace ScrollShared
 		Vertical = 1,
 		Horizontal = 2
 	}
+	public enum ScrollingFPS
+	{
+		None,
+		Low = 1,
+		Normal = 2,
+		High = 3,
+		Very_High = 4,
+	}
 }

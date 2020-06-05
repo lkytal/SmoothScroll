@@ -21,6 +21,7 @@ namespace SmoothScroll
 		private bool SmoothEnable => SmoothScrollPackage.OptionsPage?.SmoothEnable ?? true;
 		private double DistanceRatio => SmoothScrollPackage.OptionsPage?.DistanceRatio ?? 1.1;
 		private ScrollingSpeeds SpeedLever => SmoothScrollPackage.OptionsPage?.DurationRatio ?? ScrollingSpeeds.Normal;
+		private ScrollingFPS FPS => SmoothScrollPackage.OptionsPage?.FPS ?? ScrollingFPS.High;
 
 		private readonly ScrollController verticalController, horizontalController;
 
@@ -28,8 +29,8 @@ namespace SmoothScroll
 		{
 			this.wpfTextView = _wpfTextView;
 			var pageScroller = new PageScroller(wpfTextView);
-			verticalController = new ScrollController(pageScroller, ScrollingDirection.Vertical);
-			horizontalController = new ScrollController(pageScroller, ScrollingDirection.Horizontal);
+			verticalController = new ScrollController(pageScroller, ScrollingDirection.Vertical, FPS);
+			horizontalController = new ScrollController(pageScroller, ScrollingDirection.Horizontal, FPS);
 
 			wpfTextView.VisualElement.Loaded += (_, __) =>
 			{

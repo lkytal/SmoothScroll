@@ -34,8 +34,8 @@ namespace TestWpf
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
-			vscrollController = new ScrollController(this, ScrollingDirection.Vertical);
-			hscrollController = new ScrollController(this, ScrollingDirection.Horizontal);
+			vscrollController = new ScrollController(this, ScrollingDirection.Vertical, ScrollingFPS.High);
+			hscrollController = new ScrollController(this, ScrollingDirection.Horizontal, ScrollingFPS.High);
 			textBox.PreviewMouseWheel += textBox_PreviewMouseWheel;
 			HwndSource source = PresentationSource.FromVisual(textBox) as HwndSource;
 			source?.AddHook(textBox_Hook);

@@ -10,7 +10,6 @@ namespace ScrollShared
 	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable")]
 	public class ScrollController
 	{
-		private const int Interval = 16;
 		private const int AccelerateThreshold = 2;
 		private const double Accelerator = 2.0;
 		private readonly double dpiRatio;
@@ -18,18 +17,39 @@ namespace ScrollShared
 		private readonly object locker = new object();
 		private readonly IPageScroller pageScroller;
 		private readonly ScrollingDirection direction;
+		private readonly int Interval = 11;
 
 		private double totalDistance, remain;
 		private int totalRounds, round;
 
 		private Task workingThread = null;
 
-		public ScrollController(IPageScroller _pageScroller, ScrollingDirection _direction)
+		public ScrollController(IPageScroller _pageScroller, ScrollingDirection _direction, ScrollingFPS _fps)
 		{
 			pageScroller = _pageScroller;
 			direction = _direction;
 
 			dpiRatio = SystemParameters.PrimaryScreenHeight / 720.0;
+
+			switch (_fps)
+			{
+				case ScrollingFPS.Low:
+					Interval = 16;
+					break;
+
+				case ScrollingFPS.Normal:
+					Interval = 11;
+					break;
+
+				case ScrollingFPS.Very_High:
+					Interval = 5;
+					break;
+
+				default: // fall though
+				case ScrollingFPS.High:
+					Interval = 8;
+					break;
+			}
 		}
 
 		private int CalculateTotalRounds(double timeRatio, double requestDistance)
