@@ -22,8 +22,9 @@ Preview:
 
 ## Update Log
 
+* 3.2.1: Fixed compatibility for VS2017
 * 3.2.0: Fixed setting no effect
-* 3.1.4: Add FPS option
+* 3.1.5: Add FPS option
 * 3.1.4: Fixed Option Page
 * 3.1.1: Fixed MPF dependency
 * 3.1.0: Fixed load error for VS2017

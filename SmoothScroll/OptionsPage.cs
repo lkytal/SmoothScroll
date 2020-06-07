@@ -41,6 +41,6 @@ namespace SmoothScroll
 		[Category("Parameter")]
 		[Description("FPS of scrolling animation, smoother with higher FPS but will also cost more CPUs.")]
 		[DisplayName("Scrolling FPS")]
-		public ScrollingFPS FPS { get; set; } = ScrollingFPS.Normal;
+		public ScrollingFPS FPS { get; set; } = ScrollingFPS.High;
 	}
 }
