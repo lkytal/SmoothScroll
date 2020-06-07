@@ -1,17 +1,18 @@
 ﻿<Window x:Class="TestWpf.MainWindow"
-		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-		xmlns:local="clr-namespace:TestWpf"
-		mc:Ignorable="d"
-		Title="MainWindow" Height="600" Width="600" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen">
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TestWpf"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="600" Width="600" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="997*"/>
+            <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="195*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
@@ -21,6 +22,16 @@
             <RadioButton x:Name="radioNormal" Padding="10" Content="Normal" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" IsChecked="True"></RadioButton>
             <RadioButton x:Name="radioFast" Padding="10" Content="Fast" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"></RadioButton>
         </StackPanel>
-        <TextBox x:Name="textBox" Grid.Row="1" TextWrapping="NoWrap" HorizontalContentAlignment="Stretch" FontFamily="Consolas" FontSize="14" HorizontalScrollBarVisibility="Visible" Grid.ColumnSpan="2"/>
+
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="0" Grid.ColumnSpan="2">
+            <RadioButton x:Name="fvslow" Padding="10" VerticalContentAlignment="Center" Content="Very Slow" HorizontalContentAlignment="Stretch"/>
+            <RadioButton x:Name="fslow" Padding="10" Content="Slow" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"></RadioButton>
+            <RadioButton x:Name="fnormal" Padding="10" VerticalContentAlignment="Center" Content="Normal" HorizontalContentAlignment="Stretch"  IsChecked="True"/>
+            <RadioButton x:Name="ffast" Padding="10" Content="Fast" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"></RadioButton>
+            <RadioButton x:Name="fvfast" Padding="10" Content="Very Fast" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"></RadioButton>
+        </StackPanel>
+
+        <TextBox x:Name="textBox" Grid.Row="2" TextWrapping="NoWrap" HorizontalContentAlignment="Stretch" FontFamily="Consolas" FontSize="14" HorizontalScrollBarVisibility="Visible" Grid.ColumnSpan="2"/>
     </Grid>
 </Window>

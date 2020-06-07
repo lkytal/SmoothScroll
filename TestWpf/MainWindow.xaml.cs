@@ -21,8 +21,11 @@ namespace TestWpf
 	/// <summary>
 	/// MainWindow.xaml 的交互逻辑
 	/// </summary>
-	public partial class MainWindow : Window, IPageScroller
+	public partial class MainWindow : Window, IPageScroller, IParameters
 	{
+		public ScrollingSpeeds SpeedLever { get; set; }
+		public ScrollingFPS FPS { get; set; }
+
 		private const int WM_MOUSEHWHEEL = 0x020E;
 		private ScrollController vscrollController;
 		private ScrollController hscrollController;
@@ -34,8 +37,8 @@ namespace TestWpf
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
-			vscrollController = new ScrollController(this, ScrollingDirection.Vertical, ScrollingFPS.High);
-			hscrollController = new ScrollController(this, ScrollingDirection.Horizontal, ScrollingFPS.High);
+			vscrollController = new ScrollController(this, this, ScrollingDirection.Vertical);
+			hscrollController = new ScrollController(this, this, ScrollingDirection.Horizontal);
 			textBox.PreviewMouseWheel += textBox_PreviewMouseWheel;
 			HwndSource source = PresentationSource.FromVisual(textBox) as HwndSource;
 			source?.AddHook(textBox_Hook);
@@ -69,18 +72,41 @@ namespace TestWpf
 
 		private void Scroll(int delta, ScrollController controller)
 		{
-			var scrollingSpeeds = ScrollingSpeeds.Normal;
-
 			if (radioSlow.IsChecked ?? false)
 			{
-				scrollingSpeeds = ScrollingSpeeds.Slow;
+				SpeedLever = ScrollingSpeeds.Slow;
 			}
 			else if (radioFast.IsChecked ?? false)
 			{
-				scrollingSpeeds = ScrollingSpeeds.Fast;
+				SpeedLever = ScrollingSpeeds.Fast;
+			}
+			else
+			{
+				SpeedLever = ScrollingSpeeds.Normal;
 			}
 
-			controller.ScrollView(delta, scrollingSpeeds);
+			if (fvslow.IsChecked ?? false)
+			{
+				FPS = ScrollingFPS.Very_Low;
+			}
+			else if (fslow.IsChecked ?? false)
+			{
+				FPS = ScrollingFPS.Low;
+			}
+			else if (fnormal.IsChecked ?? false)
+			{
+				FPS = ScrollingFPS.Normal;
+			}
+			else if (ffast.IsChecked ?? false)
+			{
+				FPS = ScrollingFPS.High;
+			}
+			else if (fvfast.IsChecked ?? false)
+			{
+				FPS = ScrollingFPS.Very_High;
+			}
+
+			controller.ScrollView(delta);
 		}
 
 		private void textBox_PreviewMouseWheel(object sender, MouseWheelEventArgs e)

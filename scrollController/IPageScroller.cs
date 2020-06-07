@@ -5,11 +5,18 @@ namespace ScrollShared
 		void Scroll(ScrollingDirection direction, double value);
 	}
 
+	public interface IParameters
+	{
+		ScrollingSpeeds SpeedLever { get; }
+		ScrollingFPS FPS { get; }
+	}
+
 	public enum ScrollingSpeeds
 	{
 		Slow = 1,
 		Normal = 2,
-		Fast = 3
+		Fast = 3,
+		Very_Fast = 4,
 	}
 
 	public enum ScrollingDirection
@@ -20,10 +27,10 @@ namespace ScrollShared
 	}
 	public enum ScrollingFPS
 	{
-		None,
-		Low = 1,
-		Normal = 2,
-		High = 3,
-		Very_High = 4,
+		Very_Low = 1,
+		Low = 2,
+		Normal = 3,
+		High = 4,
+		Very_High = 5,
 	}
 }

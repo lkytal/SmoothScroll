@@ -9,8 +9,11 @@ using System.Windows.Threading;
 
 namespace SmoothScroll
 {
-	internal sealed class SmoothScrollProcessor : MouseProcessorBase
+	internal sealed class SmoothScrollProcessor : MouseProcessorBase, IParameters
 	{
+		public ScrollingSpeeds SpeedLever => SmoothScrollPackage.OptionsPage?.DurationRatio ?? ScrollingSpeeds.Normal;
+		public ScrollingFPS FPS => SmoothScrollPackage.OptionsPage?.FPS ?? ScrollingFPS.High;
+
 		private const int WM_MOUSEHWHEEL = 0x020E;
 
 		private readonly IWpfTextView wpfTextView;
@@ -20,8 +23,6 @@ namespace SmoothScroll
 		private bool AltEnable => SmoothScrollPackage.OptionsPage?.AltEnable ?? true;
 		private bool SmoothEnable => SmoothScrollPackage.OptionsPage?.SmoothEnable ?? true;
 		private double DistanceRatio => SmoothScrollPackage.OptionsPage?.DistanceRatio ?? 1.1;
-		private ScrollingSpeeds SpeedLever => SmoothScrollPackage.OptionsPage?.DurationRatio ?? ScrollingSpeeds.Normal;
-		private ScrollingFPS FPS => SmoothScrollPackage.OptionsPage?.FPS ?? ScrollingFPS.High;
 
 		private readonly ScrollController verticalController, horizontalController;
 
@@ -29,8 +30,8 @@ namespace SmoothScroll
 		{
 			this.wpfTextView = _wpfTextView;
 			var pageScroller = new PageScroller(wpfTextView);
-			verticalController = new ScrollController(pageScroller, ScrollingDirection.Vertical, FPS);
-			horizontalController = new ScrollController(pageScroller, ScrollingDirection.Horizontal, FPS);
+			verticalController = new ScrollController(pageScroller, this, ScrollingDirection.Vertical);
+			horizontalController = new ScrollController(pageScroller, this, ScrollingDirection.Horizontal);
 
 			wpfTextView.VisualElement.Loaded += (_, __) =>
 			{
@@ -79,7 +80,7 @@ namespace SmoothScroll
 			{
 				if (SmoothEnable && NativeMethods.IsMouseEvent())
 				{
-					verticalController.ScrollView(distance * DistanceRatio, SpeedLever);
+					verticalController.ScrollView(distance * DistanceRatio);
 				}
 				else
 				{
@@ -90,7 +91,7 @@ namespace SmoothScroll
 			{
 				if (SmoothEnable && NativeMethods.IsMouseEvent())
 				{
-					horizontalController.ScrollView(distance * DistanceRatio, SpeedLever);
+					horizontalController.ScrollView(distance * DistanceRatio);
 				}
 				else
 				{
