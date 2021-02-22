@@ -140,7 +140,7 @@ namespace ScrollShared
 			}
 		}
 
-		private async Task ScrollingThread()
+		private void ScrollingThread()
 		{
 			//int start = Environment.TickCount & Int32.MaxValue;
 
