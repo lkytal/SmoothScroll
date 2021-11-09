@@ -121,7 +121,7 @@
     <value>Smooth Scroll Extension</value>
   </data>
   <data name="112" xml:space="preserve">
-    <value>Smooth Scroll Extension for Visual Studio 2013, 2015 and 2017</value>
+    <value>Smooth Scroll Extension for Visual Studio 2013, 2015, 2017, 2019, and 2022</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="400" type="System.Resources.ResXFileRef, System.Windows.Forms">
